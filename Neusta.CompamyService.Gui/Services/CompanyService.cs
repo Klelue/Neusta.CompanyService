@@ -1,42 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Neusta.CompanyService.Gui.CompanyServiceApi;
 
-namespace Neusta.CompanyService.Gui.Services
+namespace Neusta.CompamyService.Gui.Services
 {
     public class CompanyService
     {
-        private readonly CompanyApi _companyServiceApi;
+        private readonly CompanyApi _companyApi;
 
-        public CompanyService(CompanyApi companyServiceApi)
+        public CompanyService(CompanyApi companyApi)
         {
-            _companyServiceApi = companyServiceApi;
-        }
-
-        public async Task<List<CompanyDto>> GetAll()
-        {
-            return await _companyServiceApi.ApiCompanyGetAsync();
-        }
-
-        public async Task<CompanyDto> GetById(long id)
-        {
-            return await _companyServiceApi.ApiCompanyCompanyidGetAsync(id);
-        }
-
-        public async Task<List<CompanyAttributeDto>> GetAttributes()
-        {
-            return await _companyServiceApi.AttributesGetAsync();
+            _companyApi = companyApi;
         }
 
         public async Task Save(CompanyDto company)
         {
-            _companyServiceApi.ApiCompanyPostAsync(company);
+            await _companyApi.ApiCompanyPostAsync(company);
         }
 
-        public async Task SaveAttribute(CompanyAttributeDto attribute)
+        public async Task<List<CompanyDto>> Get()
         {
-            _companyServiceApi.AttributesPostAsync(attribute);
+            return await _companyApi.ApiCompanyGetAsync();
+        }
+
+        public async Task<List<CompanyAttributeDto>> GetAttributes()
+        {
+            return await _companyApi.AttributesGetAsync();
         }
     }
 }

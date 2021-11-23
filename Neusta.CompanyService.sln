@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neusta.CompanyService.Test"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neusta.CompanyService.Database.Api", "Neusta.CompanyService.Database.Api\Neusta.CompanyService.Database.Api.csproj", "{6401A327-8EDF-4A1C-B80C-ACA683ADA499}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neusta.CompamyService.Gui", "Neusta.CompamyService.Gui\Neusta.CompamyService.Gui.csproj", "{42433D75-2751-4075-B674-F3712A40EDE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neusta.CompamyService.Gui", "Neusta.CompamyService.Gui\Neusta.CompamyService.Gui.csproj", "{42433D75-2751-4075-B674-F3712A40EDE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

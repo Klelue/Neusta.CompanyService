@@ -1,25 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Neusta.CompanyService.Gui.CompanyServiceApi;
 
 namespace Neusta.CompamyService.Gui.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        public IList<CompanyDto> companies;
+        public IList<CompanyAttributeDto> attributes;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        [Inject]
+        private Services.CompanyService companyService { get; set; }
+
+        public IndexModel()
         {
-            _logger = logger;
+            companies = null;
+            attributes = null;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-
+            companies = await companyService.Get();
+            attributes = await companyService.GetAttributes();
         }
     }
 }

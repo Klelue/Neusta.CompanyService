@@ -1,10 +1,40 @@
 ﻿@page
-@model IndexModel
+@using Neusta.CompanyService.Gui.CompanyServiceApi
+@model Neusta.CompamyService.Gui.Pages.IndexModel
 @{
-    ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Neusta Companies</h2>
+
+<table>
+    <thead>
+    <tr>
+        @if (Model.attributes != null)
+        {
+            @foreach (CompanyAttributeDto attribute in Model.attributes)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => attribute.Name)
+                </th>
+            }
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @if (Model.companies != null)
+    {
+        @foreach (CompanyDto company in Model.companies)
+        {
+            <tr>
+                @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => value.Value)
+                    </th>
+                }
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+

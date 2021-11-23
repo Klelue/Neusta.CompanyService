@@ -1,17 +1,13 @@
+using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Neusta.CompamyService.Gui.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Neusta.CompanyService.Gui.CompanyServiceApi;
 
 namespace Neusta.CompamyService.Gui
 {
@@ -34,6 +30,13 @@ namespace Neusta.CompamyService.Gui
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
+            services.AddScoped(
+                factory =>
+                {
+                    string baseUrl = "https://localhost:44317/";
+                    HttpClient client = factory.GetRequiredService<IHttpClientFactory>().CreateClient();
+                    return new CompanyApi(baseUrl, client);
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
