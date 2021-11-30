@@ -35,6 +35,20 @@ namespace Neusta.CompanyService.Api.Controllers
             return Ok();
         }
 
+        [HttpPut("/attributeValues")]
+        public ActionResult PutAttributeValue(CompanyAttributeValueDto value)
+        {
+            _companyService.UpdateAttributeValue(value);
+            return Ok();
+        }
+
+        [HttpPost("/attributeValues")]
+        public ActionResult PostAttributeValue(CompanyAttributeValueDto value)
+        {
+            _companyService.SaveAttributeValue(value);
+            return Ok();
+        }
+
         [HttpGet("/attributes")]
         public IList<CompanyAttributeDto> GetAllAttributes()
         {
@@ -45,6 +59,13 @@ namespace Neusta.CompanyService.Api.Controllers
         public ActionResult PostAttribute(CompanyAttributeDto attribute)
         {
             _companyService.SaveAttribute(attribute);
+            return Ok();
+        }
+
+        [HttpPut("/attributes")]
+        public ActionResult PutAttribute(CompanyAttributeDto attribute)
+        {
+            _companyService.UpdateAttribute(attribute);
             return Ok();
         }
 

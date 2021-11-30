@@ -69,7 +69,7 @@ namespace Neusta.CompanyService.Mappers
             return companyAttributeValues;
         }
 
-        private CompanyAttributeValue MapCompanyAttributeValueDtoToCompanyAttributeValue(CompanyAttributeValueDto companyAttributeValueDto)
+        public CompanyAttributeValue MapCompanyAttributeValueDtoToCompanyAttributeValue(CompanyAttributeValueDto companyAttributeValueDto)
         {
             CompanyAttributeValue companyAttributeValue = new CompanyAttributeValue
             {

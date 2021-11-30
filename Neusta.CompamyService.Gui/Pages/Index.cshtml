@@ -1,11 +1,27 @@
 ﻿@page
-@using Neusta.CompanyService.Gui.CompanyServiceApi
+@using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.Pages.IndexModel
 @{
 }
 
+<script src="https://code.jquery.com/jquery-3.4.0.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#buttonAddAttributes').click(function() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Page("index", "demo1")',
+                success: function(result) {
+                    $('add-attribute').html();
+                }
+        });
+        });
+    });
+</script>
+
 <h2>Neusta Companies</h2>
 
+@{ bool loogedIn = User.Identity.IsAuthenticated; }
 <table>
     <thead>
     <tr>
@@ -14,7 +30,42 @@
             @foreach (CompanyAttributeDto attribute in Model.attributes)
             {
                 <th>
-                    @Html.DisplayNameFor(model => attribute.Name)
+                    @if (loogedIn)
+                    {
+                    <form asp-page-handler="UpdateAttribute" method="post">
+                        <input type="hidden" name="_method" value="put" />
+                        <input type="text" id="attributeName" value="@(attribute.Name)" />
+                        <input type="hidden" id="id" value="@(attribute.Id)" />
+                        <input type="hidden" id="value" value="@(attribute.CompanyAttributeValues)" />
+
+
+                        <script type="text/javascript">
+                            var ButtonKeys = { "EnterKey": 13 };
+                            $(function () {
+                                $("#MainForm").keypress(function (e) {
+                                    if (e.which == ButtonKeys.EnterKey) {
+                                        var defaultButtonId = $(this).attr("defaultbutton");
+                                        $("#" + defaultButtonId).click();
+                                        return false;
+                                    }
+                                });
+                            });
+                        </script>
+                    </form>
+                    }
+                    else
+                    {
+                        @Html.DisplayName(attribute.Name)
+                    }
+                </th>
+            }
+
+            @if (loogedIn)
+            {
+                <th>
+                    <form>
+                        <input class="btn btn-primary" type="button" value="+" id="buttonAddAttributes"/>
+                    </form>
                 </th>
             }
         }
@@ -28,13 +79,67 @@
             <tr>
                 @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
                 {
-                    <th>
-                        @Html.DisplayNameFor(model => value.Value)
-                    </th>
+                    <td>
+
+                        @if (loogedIn)
+                        {
+                            <form asp-page-handler="Update" method="post">
+                                <input type="text" value="@(value.Value)"/>
+                            </form>
+                        }
+                        else
+                        {
+                            @Html.DisplayName(value.Value)
+                        }
+                    </td>
                 }
+                @if (loogedIn)
+                {
+                    @for (int index = 0; index < Model.attributes.Count - company.CompanyAttributeValues.Count; index++)
+                    {
+                        <td>
+                <form asp-page-handler="Update" method="post">
+                    <input type="text" value=""/>
+                </form>
+                        </td>
+                    }
+                }
+
             </tr>
         }
     }
     </tbody>
 </table>
 
+@if (loogedIn)
+{
+    <div>
+        <form method="post">
+            <button class="btn btn-primary">+</button>
+        </form>
+    </div>
+}
+
+
+
+<div class="modal fade" tabindex="1" role="dialog" id="add-attribute">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h5 class="modal-title">Add Attribute</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div>
+                <span class="h2">Bitte geben Sie einen Namen fürs Attribute an</span>
+            </div>
+            <div>
+                <form asp-page-handler="Attribute" method="post">
+                    <input type="text" />
+                    <button class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

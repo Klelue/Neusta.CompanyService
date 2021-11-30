@@ -20,5 +20,8 @@ namespace Neusta.CompanyService.Database.Repositories
         public void SaveAttribute(CompanyAttribute companyAttribute);
 
         public void DeleteAttribute(long id);
+        public void UpdateAttribute(CompanyAttribute attribute);
+        public void UpdateAttributeValue(CompanyAttributeValue value);
+        public void SaveAttributeValue(CompanyAttributeValue value);
     }
 }

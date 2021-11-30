@@ -56,10 +56,28 @@ namespace Neusta.CompanyService.Services
             _repository.Update(company);
         }
 
-        public void SaveAttribute(CompanyAttributeDto companyAttributeDto)
+        public void SaveAttribute(CompanyAttributeDto attributeDto)
         {
-            CompanyAttribute companyAttribute = _mapper.MapCompanyAttributeDtoToCompanyAttribute(companyAttributeDto);
-            _repository.SaveAttribute(companyAttribute);
+            CompanyAttribute attribute = _mapper.MapCompanyAttributeDtoToCompanyAttribute(attributeDto);
+            _repository.SaveAttribute(attribute);
+        }
+
+        public void UpdateAttribute(CompanyAttributeDto attributeDto)
+        {
+            CompanyAttribute attribute = _mapper.MapCompanyAttributeDtoToCompanyAttribute(attributeDto);
+            _repository.UpdateAttribute(attribute);
+        }
+
+        public void UpdateAttributeValue(CompanyAttributeValueDto valueDto)
+        {
+            CompanyAttributeValue value = _mapper.MapCompanyAttributeValueDtoToCompanyAttributeValue(valueDto);
+            _repository.UpdateAttributeValue(value);
+        }
+
+        public void SaveAttributeValue(CompanyAttributeValueDto valueDto)
+        {
+            CompanyAttributeValue value = _mapper.MapCompanyAttributeValueDtoToCompanyAttributeValue(valueDto);
+            _repository.SaveAttributeValue(value);
         }
     }
 }

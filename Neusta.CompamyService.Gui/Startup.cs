@@ -6,8 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Neusta.CompamyService.Gui.CompanyServiceApi;
 using Neusta.CompamyService.Gui.Data;
-using Neusta.CompanyService.Gui.CompanyServiceApi;
+using Neusta.CompamyService.Gui.Services;
 
 namespace Neusta.CompamyService.Gui
 {
@@ -30,10 +31,13 @@ namespace Neusta.CompamyService.Gui
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
+            services.AddScoped<ICompanyService, Services.CompanyService>();
+            services.AddHttpClient();
+
             services.AddScoped(
                 factory =>
                 {
-                    string baseUrl = "https://localhost:44317/";
+                    string baseUrl = "http://localhost:12315";
                     HttpClient client = factory.GetRequiredService<IHttpClientFactory>().CreateClient();
                     return new CompanyApi(baseUrl, client);
                 });

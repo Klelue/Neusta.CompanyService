@@ -80,5 +80,23 @@ namespace Neusta.CompanyService.Database.Repositories
             _dbContext.CompanyAttribute.Remove(companyAttribute);
             _dbContext.SaveChanges();
         }
+
+        public void UpdateAttribute(CompanyAttribute attribute)
+        {
+            _dbContext.CompanyAttribute.Update(attribute);
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateAttributeValue(CompanyAttributeValue value)
+        {
+            _dbContext.CompanyAttributeValue.Update(value);
+            _dbContext.SaveChanges();
+        }
+
+        public void SaveAttributeValue(CompanyAttributeValue value)
+        {
+            _dbContext.CompanyAttributeValue.Add(value);
+            _dbContext.SaveChanges();
+        }
     }
 }

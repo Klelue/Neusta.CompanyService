@@ -1,54 +1,130 @@
 {
-  
-    "openapi": "3.0.1",
-    "info": {
-      "title": "Neusta.CompanyService.Api",
-      "version": "v1"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Neusta.CompanyService.Api",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Company": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Company"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Company"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
     },
-    "paths": {
-      "/api/Company": {
-        "get": {
-          "tags": [
-            "Company"
-          ],
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "text/plain": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CompanyDto"
-                    }
-                  }
-                },
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CompanyDto"
-                    }
-                  }
-                },
-                "text/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CompanyDto"
-                    }
-                  }
-                }
-              }
+    "/api/Company/companyId": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
             }
           }
-        },
-        "post": {
-          "tags": [
-            "Company"
-          ],
-          "requestBody": {
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyDto"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanyDto"
@@ -58,238 +134,249 @@
                 "schema": {
                   "$ref": "#/components/schemas/CompanyDto"
                 }
-              },
-              "application/*+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDto"
-                }
               }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success"
-            }
-          }
-        },
-        "put": {
-          "tags": [
-            "Company"
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDto"
-                }
-              },
-              "application/*+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDto"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success"
-            }
-          }
-        }
-      },
-      "/api/Company/companyId": {
-        "get": {
-          "tags": [
-            "Company"
-          ],
-          "parameters": [
-            {
-              "name": "id",
-              "in": "query",
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "text/plain": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CompanyDto"
-                  }
-                },
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CompanyDto"
-                  }
-                },
-                "text/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CompanyDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/api/Company/companyID": {
-        "delete": {
-          "tags": [
-            "Company"
-          ],
-          "parameters": [
-            {
-              "name": "id",
-              "in": "query",
-              "schema": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Success"
-            }
-          }
-        }
-      },
-      "/attributes": {
-        "get": {
-          "tags": [
-            "Company"
-          ],
-          "responses": {
-            "200": {
-              "description": "Success",
-              "content": {
-                "text/plain": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CompanyAttributeDto"
-                    }
-                  }
-                },
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CompanyAttributeDto"
-                    }
-                  }
-                },
-                "text/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CompanyAttributeDto"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "post": {
-          "tags": [
-            "Company"
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAttributeDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAttributeDto"
-                }
-              },
-              "application/*+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAttributeDto"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Success"
             }
           }
         }
       }
     },
-    "components": {
-      "schemas": {
-        "CompanyAttributeValueDto": {
-          "type": "object",
-          "properties": {
-            "companyId": {
+    "/api/Company/companyID": {
+      "delete": {
+        "tags": [
+          "Company"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
               "type": "integer",
               "format": "int64"
-            },
-            "companyAttributeId": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "value": {
-              "type": "string",
-              "nullable": true
             }
-          },
-          "additionalProperties": false
-        },
-        "CompanyDto": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "companyAttributeValues": {
-              "type": "array",
-              "items": {
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/attributeValues": {
+      "put": {
+        "tags": [
+          "Company"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/CompanyAttributeValueDto"
-              },
-              "nullable": true
-            }
-          },
-          "additionalProperties": false
-        },
-        "CompanyAttributeDto": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "int64"
+              }
             },
-            "name": {
-              "type": "string",
-              "nullable": true
-            },
-            "companyAttributeValues": {
-              "type": "array",
-              "items": {
+            "text/json": {
+              "schema": {
                 "$ref": "#/components/schemas/CompanyAttributeValueDto"
-              },
-              "nullable": true
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeValueDto"
+              }
             }
-          },
-          "additionalProperties": false
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Company"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeValueDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeValueDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeValueDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/attributes": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyAttributeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyAttributeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyAttributeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Company"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Company"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAttributeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
         }
       }
     }
-  
+  },
+  "components": {
+    "schemas": {
+      "CompanyAttributeValueDto": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyAttributeId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CompanyDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyAttributeValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyAttributeValueDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CompanyAttributeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyAttributeValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyAttributeValueDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
 }
