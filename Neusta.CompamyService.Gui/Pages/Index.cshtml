@@ -12,9 +12,26 @@
                 type: 'GET',
                 url: '@Url.Page("index", "demo1")',
                 success: function(result) {
-                    $('add-attribute').html();
+                    
                 }
+            });
         });
+    });
+</script>
+
+<script type="text/javascript">
+    var ButtonKeys = { "EnterKey": 13 };
+    $(function () {
+        $("#attributeForm").keypress(function (e) {
+            if (e.which == ButtonKeys.EnterKey) {
+                var defaultButtonId = $(this).attr("updateAttributeButton");
+                $("#" + defaultButtonId).click(function() {
+                   
+                    var e = new Error('Enterklappt');
+                throw e;
+                });
+                return false;
+            }
         });
     });
 </script>
@@ -32,25 +49,11 @@
                 <th>
                     @if (loogedIn)
                     {
-                    <form asp-page-handler="UpdateAttribute" method="post">
+                    <form asp-page-handler="UpdateAttribute" id="attributeForm" method="post">
                         <input type="hidden" name="_method" value="put" />
                         <input type="text" id="attributeName" value="@(attribute.Name)" />
                         <input type="hidden" id="id" value="@(attribute.Id)" />
                         <input type="hidden" id="value" value="@(attribute.CompanyAttributeValues)" />
-
-
-                        <script type="text/javascript">
-                            var ButtonKeys = { "EnterKey": 13 };
-                            $(function () {
-                                $("#MainForm").keypress(function (e) {
-                                    if (e.which == ButtonKeys.EnterKey) {
-                                        var defaultButtonId = $(this).attr("defaultbutton");
-                                        $("#" + defaultButtonId).click();
-                                        return false;
-                                    }
-                                });
-                            });
-                        </script>
                     </form>
                     }
                     else
