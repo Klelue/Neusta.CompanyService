@@ -1,0 +1,64 @@
+﻿@page
+@using Neusta.CompamyService.Gui.CompanyServiceApi
+@model Neusta.CompamyService.Gui.Pages.CompanyTable.CompanyTableLoggedInModel
+@{
+}
+
+<table>
+    <thead>
+    @if (Model.attributes != null)
+    {
+        <tr>
+            @foreach (CompanyAttributeDto attribute in Model.attributes)
+            {
+                <th>
+                    <form asp-page-handler="UpdateAttribute" method="post">
+                        <input type="text" id="attributeName" value="@(attribute.Name)"/>
+                        <input type="hidden" id="attribute" value="@(attribute)"/>
+                    </form>
+                </th>
+            }
+            
+            <th>
+                <form asp-page-handler="Attribute" method="post">
+                    <button class="btn btn-primary">+</button>
+                </form>
+            </th>
+        </tr>
+    }
+    </thead>
+    <tbody>
+    @if (Model.companies != null)
+    {
+        @foreach (CompanyDto company in Model.companies)
+        {
+            <tr>
+                @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
+                {
+                    <td>
+                        <form asp-page-handler="Update" method="post">
+                            <input type="text" value="@(value.Value)"/>
+                            <input type="hidden" id="value" value="@(value)"/>
+                        </form>
+                    </td>
+                }
+                
+                @for (int index = 0; index < Model.attributes.Count - company.CompanyAttributeValues.Count; index++)
+                {
+                    <td>
+                        <form asp-page-handler="Update" method="post">
+                            <input type="text" value="" />
+                        </form>
+                    </td>
+                }
+                
+                <td>
+                    <form method="post">
+                        <button class="btn btn-primary">+</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>

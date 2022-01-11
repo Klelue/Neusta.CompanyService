@@ -1,8 +1,8 @@
 ﻿@page
 @using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.Pages.IndexModel
-@{
-}
+
+@{ bool loogedIn = User.Identity.IsAuthenticated; }
 
 <script src="https://code.jquery.com/jquery-3.4.0.js"></script>
 <script>
@@ -12,7 +12,7 @@
                 type: 'GET',
                 url: '@Url.Page("index", "demo1")',
                 success: function(result) {
-                    
+
                 }
             });
         });
@@ -25,10 +25,10 @@
         $("#attributeForm").keypress(function (e) {
             if (e.which == ButtonKeys.EnterKey) {
                 var defaultButtonId = $(this).attr("updateAttributeButton");
-                $("#" + defaultButtonId).click(function() {
-                   
+                $("#" + defaultButtonId).click(function () {
+
                     var e = new Error('Enterklappt');
-                throw e;
+                    throw e;
                 });
                 return false;
             }
@@ -36,81 +36,79 @@
     });
 </script>
 
-<h2>Neusta Companies</h2>
-
-@{ bool loogedIn = User.Identity.IsAuthenticated; }
+<h1 class="text-center">Neusta Companies</h1>
 <table>
     <thead>
-    <tr>
-        @if (Model.attributes != null)
-        {
-            @foreach (CompanyAttributeDto attribute in Model.attributes)
+        <tr>
+            @if (Model.attributes != null)
             {
-                <th>
-                    @if (loogedIn)
-                    {
-                    <form asp-page-handler="UpdateAttribute" id="attributeForm" method="post">
-                        <input type="hidden" name="_method" value="put" />
-                        <input type="text" id="attributeName" value="@(attribute.Name)" />
-                        <input type="hidden" id="id" value="@(attribute.Id)" />
-                        <input type="hidden" id="value" value="@(attribute.CompanyAttributeValues)" />
-                    </form>
-                    }
-                    else
-                    {
-                        @Html.DisplayName(attribute.Name)
-                    }
-                </th>
-            }
-
-            @if (loogedIn)
-            {
-                <th>
-                    <form>
-                        <input class="btn btn-primary" type="button" value="+" id="buttonAddAttributes"/>
-                    </form>
-                </th>
-            }
-        }
-    </tr>
-    </thead>
-    <tbody>
-    @if (Model.companies != null)
-    {
-        @foreach (CompanyDto company in Model.companies)
-        {
-            <tr>
-                @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
+                @foreach (CompanyAttributeDto attribute in Model.attributes)
                 {
-                    <td>
-
+                    <th>
                         @if (loogedIn)
                         {
-                            <form asp-page-handler="Update" method="post">
-                                <input type="text" value="@(value.Value)"/>
+                            <form asp-page-handler="UpdateAttribute" id="attributeForm" method="post">
+                                <input type="hidden" name="_method" value="put" />
+                                <input type="text" id="attributeName" value="@(attribute.Name)" />
+                                <input type="hidden" id="id" value="@(attribute.Id)" />
+                                <input type="hidden" id="value" value="@(attribute.CompanyAttributeValues)" />
                             </form>
                         }
                         else
                         {
-                            @Html.DisplayName(value.Value)
+                            @Html.DisplayName(attribute.Name)
                         }
-                    </td>
-                }
-                @if (loogedIn)
-                {
-                    @for (int index = 0; index < Model.attributes.Count - company.CompanyAttributeValues.Count; index++)
-                    {
-                        <td>
-                <form asp-page-handler="Update" method="post">
-                    <input type="text" value=""/>
-                </form>
-                        </td>
-                    }
+                    </th>
                 }
 
-            </tr>
+                @if (loogedIn)
+                {
+                    <th>
+                        <form>
+                            <span asp-action="AddAdtribute">+</span>
+                        </form>
+                    </th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.companies != null)
+        {
+            @foreach (CompanyDto company in Model.companies)
+            {
+                <tr>
+                    @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
+                    {
+                        <td>
+
+                            @if (loogedIn)
+                            {
+                                <form asp-page-handler="Update" method="post">
+                                    <input type="text" value="@(value.Value)" />
+                                </form>
+                            }
+                            else
+                            {
+                                @Html.DisplayName(value.Value)
+                            }
+                        </td>
+                    }
+                    @if (loogedIn)
+                    {
+                        @for (int index = 0; index < Model.attributes.Count - company.CompanyAttributeValues.Count; index++)
+                        {
+                            <td>
+                                <form asp-page-handler="Update" method="post">
+                                    <input type="text" value="" />
+                                </form>
+                            </td>
+                        }
+                    }
+
+                </tr>
+            }
         }
-    }
     </tbody>
 </table>
 
@@ -146,3 +144,4 @@
         </div>
     </div>
 </div>
+
