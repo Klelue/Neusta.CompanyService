@@ -18,21 +18,32 @@ namespace Neusta.CompamyService.Gui.Views.CompanyTable
             companyService = service;
         }
 
-        public async Task OnGetAsync(IList<CompanyAttributeDto> attributes, IList<CompanyDto> companies)
+        public async Task OnGetAsync()
         {
-            this.attributes = attributes;
-            this.companies = companies;
+            companies = await companyService.Get();
+            attributes = await companyService.GetAttributes();
         }
 
         public async Task OnPostAsync()
         {
             await companyService.Save(new CompanyDto());
-            
+            await OnGetAsync();
+
         }
 
-        public async Task OnPostAttributeAsync()
+        public async Task OnPostUpdateAttributeAsync(string attributeName, CompanyAttributeDto attribute)
         {
-            
+            attribute.Name = attributeName;
+            await companyService.UpdateAttribute(attribute);
+            await OnGetAsync(); 
+        }
+
+        public async Task OnPostUpdateValueAsync(string newValue, CompanyAttributeValueDto
+             value)
+        {
+            value.Value = newValue;
+            await companyService.UpdateAttributeValue(value);
+            await OnGetAsync();
         }
     }
 }

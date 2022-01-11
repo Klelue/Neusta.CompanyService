@@ -3,6 +3,7 @@
 
 // Write your JavaScript code.
 
+var ButtonKeys = { "EnterKey": 13 };
 
 ShowAddAttribute  => {
     $.ajax({
@@ -28,7 +29,7 @@ GetTable = (url) => {
 
 UpdateAttributeByPressingButton = (formName) => {
     $("#" + formName).keypress(function(e) {
-        if (e.which == ButtonKeys.EnterKey) {
+        if (e.which === ButtonKeys.EnterKey) {
             var defaultButtonId = $(this).attr("updateAttributeButton");
             $("#" + defaultButtonId).click(function() {
 

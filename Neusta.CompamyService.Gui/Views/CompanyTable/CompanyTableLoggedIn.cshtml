@@ -20,10 +20,7 @@
             }
             
             <th>
-                <form asp-page-handler="Attribute" method="post">
-                    <button class="btn btn-primary">+</button>
-                </form>
-
+                <a onlick="ShowAddAttribute" class="btn btn-primary">+</a>
             </th>
         </tr>
     }
@@ -37,7 +34,7 @@
                 @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
                 {
                     <td>
-                        <form asp-page-handler="Update" method="post">
+                        <form asp-page-handler="UpdateValue" method="post">
                             <input type="text" value="@(value.Value)"/>
                             <input type="hidden" id="value" value="@(value)"/>
                         </form>
