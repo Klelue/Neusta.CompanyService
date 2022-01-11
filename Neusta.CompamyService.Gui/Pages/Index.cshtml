@@ -1,147 +1,22 @@
 ﻿@page
 @using Neusta.CompamyService.Gui.CompanyServiceApi
+@using Microsoft.CodeAnalysis.CSharp.Syntax
 @model Neusta.CompamyService.Gui.Pages.IndexModel
 
 @{ bool loogedIn = User.Identity.IsAuthenticated; }
 
-<script src="https://code.jquery.com/jquery-3.4.0.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#buttonAddAttributes').click(function() {
-            $.ajax({
-                type: 'GET',
-                url: '@Url.Page("index", "demo1")',
-                success: function(result) {
-
-                }
-            });
-        });
-    });
-</script>
-
-<script type="text/javascript">
-    var ButtonKeys = { "EnterKey": 13 };
-    $(function () {
-        $("#attributeForm").keypress(function (e) {
-            if (e.which == ButtonKeys.EnterKey) {
-                var defaultButtonId = $(this).attr("updateAttributeButton");
-                $("#" + defaultButtonId).click(function () {
-
-                    var e = new Error('Enterklappt');
-                    throw e;
-                });
-                return false;
-            }
-        });
-    });
-</script>
-
 <h1 class="text-center">Neusta Companies</h1>
-<table>
-    <thead>
-        <tr>
-            @if (Model.attributes != null)
-            {
-                @foreach (CompanyAttributeDto attribute in Model.attributes)
-                {
-                    <th>
-                        @if (loogedIn)
-                        {
-                            <form asp-page-handler="UpdateAttribute" id="attributeForm" method="post">
-                                <input type="hidden" name="_method" value="put" />
-                                <input type="text" id="attributeName" value="@(attribute.Name)" />
-                                <input type="hidden" id="id" value="@(attribute.Id)" />
-                                <input type="hidden" id="value" value="@(attribute.CompanyAttributeValues)" />
-                            </form>
-                        }
-                        else
-                        {
-                            @Html.DisplayName(attribute.Name)
-                        }
-                    </th>
-                }
 
-                @if (loogedIn)
-                {
-                    <th>
-                        <form>
-                            <span asp-action="AddAdtribute">+</span>
-                        </form>
-                    </th>
-                }
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.companies != null)
-        {
-            @foreach (CompanyDto company in Model.companies)
-            {
-                <tr>
-                    @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
-                    {
-                        <td>
-
-                            @if (loogedIn)
-                            {
-                                <form asp-page-handler="Update" method="post">
-                                    <input type="text" value="@(value.Value)" />
-                                </form>
-                            }
-                            else
-                            {
-                                @Html.DisplayName(value.Value)
-                            }
-                        </td>
-                    }
-                    @if (loogedIn)
-                    {
-                        @for (int index = 0; index < Model.attributes.Count - company.CompanyAttributeValues.Count; index++)
-                        {
-                            <td>
-                                <form asp-page-handler="Update" method="post">
-                                    <input type="text" value="" />
-                                </form>
-                            </td>
-                        }
-                    }
-
-                </tr>
-            }
-        }
-    </tbody>
-</table>
 
 @if (loogedIn)
 {
-    <div>
-        <form method="post">
-            <button class="btn btn-primary">+</button>
-        </form>
-    </div>
+    GetTable('Url.Page("CompanyTableLoggedIn", "OnGetAsync")');
+}
+}
+else
+{
+    GetTable('Url.Page("CompanyTableNotLoggedIn", "OnGetAsync")');
 }
 
 
-
-<div class="modal fade" tabindex="1" role="dialog" id="add-attribute">
-    <div class="modal-dialog">
-        <div class="modal-header">
-            <h5 class="modal-title">Add Attribute</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div>
-                <span class="h2">Bitte geben Sie einen Namen fürs Attribute an</span>
-            </div>
-            <div>
-                <form asp-page-handler="Attribute" method="post">
-                    <input type="text" />
-                    <button class="btn btn-primary">Add</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 

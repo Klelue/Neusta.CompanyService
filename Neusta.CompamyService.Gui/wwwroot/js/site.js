@@ -7,7 +7,7 @@ var ButtonKeys = { "EnterKey": 13 };
 
 ShowAddAttribute = (url) => {
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: url,
         success: function(res) {
             $("#form-modal .modal-body").html(res);
@@ -19,10 +19,10 @@ ShowAddAttribute = (url) => {
 
 GetTable = (url) => {
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: url,
         success: function(res) {
-
+            $()
         }
     });
 };
