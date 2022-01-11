@@ -5,7 +5,7 @@
 
 var ButtonKeys = { "EnterKey": 13 };
 
-ShowAddAttribute  => {
+ShowAddAttribute = (url) => {
     $.ajax({
         type: "GET",
         url: url,
