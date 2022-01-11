@@ -15,3 +15,13 @@ ShowAddAttribute  => {
         } 
     })
 };
+
+GetTable = (url) => {
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function(res) {
+
+        }
+    })
+}

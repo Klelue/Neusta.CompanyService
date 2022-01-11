@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
 
-namespace Neusta.CompamyService.Gui.Pages.CompanyTable
+namespace Neusta.CompamyService.Gui.Views.CompanyTable
 {
     public class CompanyTableNotLoggedInModel : PageModel
     {

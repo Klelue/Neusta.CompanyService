@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
 using Neusta.CompamyService.Gui.Services;
 
-namespace Neusta.CompamyService.Gui.Pages.CompanyTable
+namespace Neusta.CompamyService.Gui.Views.CompanyTable
 {
     public class CompanyTableLoggedInModel : PageModel
     {
