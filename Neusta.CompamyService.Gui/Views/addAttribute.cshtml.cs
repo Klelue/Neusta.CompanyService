@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
 using Neusta.CompamyService.Gui.Services;
 
@@ -17,21 +16,22 @@ namespace Neusta.CompamyService.Gui.Views
             companyService = service;
         }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string attributeName)
-        {
-            bool isValid = false;
+        { 
+            string isValid = "false";
 
-           if (attributeName.Trim() != "")
+            if (!string.IsNullOrWhiteSpace(attributeName))
             {
                 await CreateNewAttributeDto(attributeName);
-                isValid = true;
-            }
-
-           return Json(new {isValid, html=""});
+                isValid = "true";
+            } 
+           
+           return new JsonResult(isValid);
         }
 
 
