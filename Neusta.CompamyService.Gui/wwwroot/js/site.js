@@ -9,7 +9,7 @@ ShowAddAttribute = (url) => {
     $.ajax({
         type: 'GET',
         url: url,
-        success: function(res) {
+        success: function(result) {
             $("#form-modal .modal-body").html(res);
             $("#form-modal .modal-title").html("Attribute hinzufügen");
             $("#form-modal").Modal('show');
@@ -17,19 +17,21 @@ ShowAddAttribute = (url) => {
     });
 };
 
-GetTable = (url) => {
-    $.ajax({
-        type: 'GET',
-        url: url,
-        success: function(res) {
-            $()
-        }
+UpdateTableOnclick = (url) => {
+    $(function() {
+        $('#load').on('click', LoadTable(url));
     });
 };
 
+LoadTable = (url) => {
+    $(function() {
+        $('#grid').load(url);
+    });
+}
+
 UpdateAttributeByPressingButton = (formName) => {
-    $("#" + formName).keypress(function(e) {
-        if (e.which === ButtonKeys.EnterKey) {
+    $("#" + formName).keypress(function(result) {
+        if (result.which === ButtonKeys.EnterKey) {
             var defaultButtonId = $(this).attr("updateAttributeButton");
             $("#" + defaultButtonId).click(function() {
 

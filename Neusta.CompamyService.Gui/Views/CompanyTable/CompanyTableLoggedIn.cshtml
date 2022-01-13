@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.Views.CompanyTable.CompanyTableLoggedInModel
 @{
@@ -21,7 +21,7 @@
             }
             
             <th>
-                <a onlick="ShowAddAttribute('@Url.Action("AddAttribute", "AddAttribute.cshtml")')" class="btn btn-primary">+</a>
+                <a onlick="ShowAddAttribute('@Url.Page("AddAttribute", "")')" class="btn btn-primary">+</a>
             </th>
         </tr>
     }

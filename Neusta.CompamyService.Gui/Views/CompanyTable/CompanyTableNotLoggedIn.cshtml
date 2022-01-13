@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.Views.CompanyTable.CompanyTableNotLoggedInModel
 @{
@@ -8,30 +8,30 @@
 
 <table>
     <thead>
-    @if (Model.attributes != null)
-    {
-        <tr>
-            @foreach (CompanyAttributeDto attribute in Model.attributes)
-            {
-                <th>
-                    @Html.DisplayName(attribute.Name)
-                </th>
-            }
-        </tr>
-    }
-    </thead>
-    <tbody>
-    @if (Model.companies != null)
-    {
-        @foreach (CompanyDto company in Model.companies)
+        @if (Model.attributes != null)
         {
             <tr>
-                @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
+                @foreach (CompanyAttributeDto attribute in Model.attributes)
                 {
-                    @Html.DisplayName(value.Value)
+                    <th>
+                        @Html.DisplayName(attribute.Name)
+                    </th>
                 }
             </tr>
         }
-    }
+    </thead>
+    <tbody>
+        @if (Model.companies != null)
+        {
+            @foreach (CompanyDto company in Model.companies)
+            {
+                <tr>
+                    @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
+                    {
+                        @Html.DisplayName(value.Value)
+                    }
+                </tr>
+            }
+        }
     </tbody>
 </table>
