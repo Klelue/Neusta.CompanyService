@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
 using Neusta.CompamyService.Gui.Services;
 
-namespace Neusta.CompamyService.Gui.Views
+namespace Neusta.CompamyService.Gui.Pages
 {
     public class AddAttributeModel : PageModel
     {
-       
+        [BindProperty]
+        public string AttributeName { get; set; }
+        
         private ICompanyService companyService;
 
         public AddAttributeModel(ICompanyService service)
@@ -21,13 +23,13 @@ namespace Neusta.CompamyService.Gui.Views
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string attributeName)
+        public async Task<IActionResult> OnPostAsync()
         { 
             string isValid = "false";
 
-            if (!string.IsNullOrWhiteSpace(attributeName))
+            if (!string.IsNullOrWhiteSpace(AttributeName))
             {
-                await CreateNewAttributeDto(attributeName);
+                await CreateNewAttributeDto();
                 isValid = "true";
             } 
            
@@ -35,11 +37,11 @@ namespace Neusta.CompamyService.Gui.Views
         }
 
 
-        private async Task CreateNewAttributeDto(string attributeName)
+        private async Task CreateNewAttributeDto()
         {
             CompanyAttributeDto attribute = new CompanyAttributeDto
             {
-                Name = attributeName
+                Name = AttributeName
             };
 
             await companyService.SaveAttribute(attribute);

@@ -9,12 +9,11 @@
 
 @if (loogedIn)
 {
-    LoadTable('/CompanyTableLoggedIn/Partial');
-}
+    await Html.PartialAsync("~/Pages/CompanyTable/CompanyTableLoggedIn.cshtml");
 }
 else
 {
-    LoadTable('/CompanyTableNotLoggedIn/Partial');
+    await Html.PartialAsync("~/Pages/CompanyTable/CompanyTableNotLoggedIn.cshtml");
 }
 
 
