@@ -19,12 +19,7 @@ namespace Neusta.CompamyService.Gui.Models
             companyService = service;
         }
 
-        public async Task OnGetAsync()
-        {
-           
-        }
-
-        public async Task<PartialViewResult> OnGetTablePartialAsync()
+        public async Task<PartialViewResult> OnGetAsync()
         {
             companies = await companyService.Get();
             attributes = await companyService.GetAttributes();

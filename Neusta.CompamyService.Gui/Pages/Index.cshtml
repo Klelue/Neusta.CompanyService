@@ -1,6 +1,9 @@
 ﻿@page
 @using Neusta.CompamyService.Gui.CompanyServiceApi
 @using Microsoft.CodeAnalysis.CSharp.Syntax
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Neusta.CompamyService.Gui.Models
+@using Neusta.CompamyService.Gui.Services
 @model Neusta.CompamyService.Gui.Pages.IndexModel
 
 @{ bool loogedIn = User.Identity.IsAuthenticated; }
@@ -9,11 +12,11 @@
 
 @if (loogedIn)
 {
-    await Html.PartialAsync("~/Pages/CompanyTable/CompanyTableLoggedIn.cshtml");
+    await Html.RenderPartialAsync("CompanyTable/_CompanyTableLoggedIn");
 }
 else
 {
-    await Html.PartialAsync("~/Pages/CompanyTable/CompanyTableNotLoggedIn.cshtml");
+    await Html.PartialAsync("~/Pages/CompanyTable/_CompanyTableNotLoggedIn.cshtml");
 }
 
 
