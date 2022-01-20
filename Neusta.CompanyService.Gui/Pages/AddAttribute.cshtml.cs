@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Neusta.CompamyService.Gui.CompanyServiceApi;
-using Neusta.CompamyService.Gui.Services;
+using Neusta.CompanyService.Gui.CompanyServiceApi;
+using Neusta.CompanyService.Gui.Services;
 
 
-
-namespace Neusta.CompamyService.Gui.Pages
+namespace Neusta.CompanyService.Gui.Pages
 {
     public class AddAttributeModel : PageModel
     {

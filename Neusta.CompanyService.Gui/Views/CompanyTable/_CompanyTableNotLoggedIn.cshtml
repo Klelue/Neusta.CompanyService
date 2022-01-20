@@ -1,0 +1,36 @@
+﻿@using Neusta.CompanyService.Gui.CompanyServiceApi
+@model Neusta.CompanyService.Gui.Models.TableModel
+@{
+    Layout = null;
+}
+
+
+<table>
+    <thead>
+        @if (Model.Attributes != null)
+        {
+            <tr>
+                @foreach (CompanyAttributeDto attribute in Model.Attributes)
+                {
+                    <th>
+                        @Html.DisplayName(attribute.Name)
+                    </th>
+                }
+            </tr>
+        }
+    </thead>
+    <tbody>
+        @if (Model.Companies != null)
+        {
+            @foreach (CompanyDto company in Model.Companies)
+            {
+                <tr>
+                    @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
+                    {
+                        @Html.DisplayName(value.Value)
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
