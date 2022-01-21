@@ -22,7 +22,7 @@ namespace Neusta.CompamyService.Gui.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            return Page();
+            return new PartialViewResult();
         }
 
         public async Task<IActionResult> OnPostAsync()

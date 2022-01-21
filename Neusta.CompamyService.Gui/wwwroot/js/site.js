@@ -3,40 +3,46 @@
 
 // Write your JavaScript code.
 
-var ButtonKeys = { "EnterKey": 13 };
+const EnterKeyCode = 13;
 
-ShowAddAttribute = (url) => {
+function ShowAddAttribute (url) {
     $.ajax({
         type: 'GET',
         url: url,
-        success: function(result) {
-            $("#form-modal .modal-body").html(res);
+        success: function(response) {
+            $("#form-modal .modal-body").html(response);
             $("#form-modal .modal-title").html("Attribute hinzufügen");
-            $("#form-modal").Modal('show');
+            $("#form-modal").showModal();
         }
     });
 };
 
-UpdateTableOnclick = (url) => {
-    $(function() {
-        $('#load').on('click', LoadTable(url));
+IndexFunction = (url, data) => {
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        contentType: "application/json; charset=utf-8",
+        dataType: "html",
+        success: function(response) {
+            $('#companyTable').html(response);
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
     });
 };
 
-LoadTable = (url) => {
-    $(function() {
-        $('#grid').load(url);
-    });
-}
+function UpdateAttributeByPressingButton () {
+    var element = document.getElementById('attributeName');
 
-UpdateAttributeByPressingButton = (formName) => {
-    $("#" + formName).keypress(function(result) {
-        if (result.which === ButtonKeys.EnterKey) {
-            var defaultButtonId = $(this).attr("updateAttributeButton");
-            $("#" + defaultButtonId).click(function() {
-
-            });
-            return false;
-        }
-    });
+    element.addEventListener("keyup",
+        function(event) {
+            if (event.keyCode === EnterKeyCode) {
+                document.getElementById('attributeForm').submit();
+            }
+        });
 };

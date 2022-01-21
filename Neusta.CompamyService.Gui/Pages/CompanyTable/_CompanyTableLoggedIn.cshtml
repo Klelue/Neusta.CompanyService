@@ -1,62 +1,68 @@
 ﻿@using Neusta.CompamyService.Gui.CompanyServiceApi
-@model Neusta.CompamyService.Gui.Models.TableModel
-@{
-    Layout = null;
-}
+@model Neusta.CompamyService.Gui.Models.TableValues
 
-<table>
-    <thead>
-        @if (Model.attributes != null)
-        {
-            <tr>
-                @foreach (CompanyAttributeDto attribute in Model.attributes)
-                {
-                    <th>
-                        <form asp-page-handler="UpdateAttribute" method="post">
-                            <input type="text" id="attributeName" value="@(attribute.Name)" />
-                            <input type="hidden" id="attribute" value="@(attribute)" />
-                        </form>
-                    </th>
-                }
 
-                <th>
-                    <a onlick="ShowAddAttribute('@Url.Page("AddAttribute", "")')" class="btn btn-primary">+</a>
-                </th>
-            </tr>
-        }
-    </thead>
-    <tbody>
-        @if (Model.companies != null)
-        {
-            @foreach (CompanyDto company in Model.companies)
+<div style="overflow: auto">
+    <table class="table table-striped">
+        <thead>
+            @if (Model.Attributes != null)
             {
                 <tr>
-                    @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
-                    {
-                        <td>
-                            <form asp-page-handler="UpdateValue" method="post">
-                                <input type="text" value="@(value.Value)" />
-                                <input type="hidden" id="value" value="@(value)" />
-                            </form>
-                        </td>
-                    }
+                    <th>
+                        @{ var url = Url.Page("AddAttribute");}
+                        <input type="button" onlick="ShowAddAttribute(@url)" class="btn btn-primary" value="+">
+                    </th>
 
-                    @for (int index = 0; index < Model.attributes.Count - company.CompanyAttributeValues.Count; index++)
+                    @foreach (var attribute in Model.Attributes)
                     {
-                        <td>
-                            <form asp-page-handler="Update" method="post">
-                                <input type="text" value="" />
-                            </form>
-                        </td>
-                    }
 
-                    <td>
-                        <form method="post">
-                            <button class="btn btn-primary">+</button>
-                        </form>
-                    </td>
+                        <th>
+                            <form asp-page-handler="Attribute" id="attributeForm" method="post">
+                                <input type="text" id="attributeName" value="@(attribute.Name)" />
+                                <input type="hidden" id="attribute" value="@(attribute)" />
+                            </form>
+                        </th>
+                    }
                 </tr>
             }
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @if (Model.Companies != null)
+            {
+                @foreach (var company in Model.Companies)
+                {
+                    <tr>
+                        <td>
+                            <button class="btn btn-primary">Edit</button>
+                        </td>
+                        @foreach (var value in company.CompanyAttributeValues)
+                        {
+                            <td>
+                                <form asp-page-handler="Value" id="valueForm" method="post">
+                                    <input type="text" id="valueNameId" value="@(value.Value)" />
+                                    <input type="hidden" id="value" value="@(value)" />
+                                    UpdateAttributeByPressingButton(valueNameId, valueForm)
+                                </form>
+                            </td>
+                        }
+
+                        @for (var index = 0; index < Model.Attributes.Count - company.CompanyAttributeValues.Count; index++)
+                        {
+                            <td>
+                                <form asp-page-handler="Update" method="post">
+                                    <input type="text" value="" />
+                                </form>
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <form method="post">
+        <button type="submit" class="btn btn-primary">Add Company</button>
+    </form>
+</div>

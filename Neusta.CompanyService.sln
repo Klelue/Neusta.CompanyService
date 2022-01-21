@@ -37,8 +37,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neusta.CompanyService.Datab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neusta.CompamyService.Gui", "Neusta.CompamyService.Gui\Neusta.CompamyService.Gui.csproj", "{42433D75-2751-4075-B674-F3712A40EDE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neusta.CompanyService.Gui", "Neusta.CompanyService.Gui\Neusta.CompanyService.Gui.csproj", "{102CFF59-5BF6-46D4-885F-242DD5DD5131}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,10 +79,6 @@ Global
 		{42433D75-2751-4075-B674-F3712A40EDE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42433D75-2751-4075-B674-F3712A40EDE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42433D75-2751-4075-B674-F3712A40EDE4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{102CFF59-5BF6-46D4-885F-242DD5DD5131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{102CFF59-5BF6-46D4-885F-242DD5DD5131}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{102CFF59-5BF6-46D4-885F-242DD5DD5131}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{102CFF59-5BF6-46D4-885F-242DD5DD5131}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,7 +99,6 @@ Global
 		{F42D2E31-C2AD-41AF-9AAF-B0C35C6768DA} = {62CBCD2D-303F-4512-B00E-2690158F0A68}
 		{6401A327-8EDF-4A1C-B80C-ACA683ADA499} = {DBDE7683-8657-4769-A18F-9D600A95B2E5}
 		{42433D75-2751-4075-B674-F3712A40EDE4} = {53281774-90A9-433B-B82C-B45DD7E5A232}
-		{102CFF59-5BF6-46D4-885F-242DD5DD5131} = {53281774-90A9-433B-B82C-B45DD7E5A232}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CBC96688-832B-4A29-BB31-9DDA3FA4CA56}

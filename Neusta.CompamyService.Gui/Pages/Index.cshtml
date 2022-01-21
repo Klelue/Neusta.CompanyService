@@ -1,4 +1,4 @@
-﻿@page
+﻿@page  "{handler?}"
 @using Neusta.CompamyService.Gui.CompanyServiceApi
 @using Microsoft.CodeAnalysis.CSharp.Syntax
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
@@ -10,14 +10,17 @@
 
 <h1 class="text-center">Neusta Companies</h1>
 
-@if (loogedIn)
-{
-    await Html.RenderPartialAsync("CompanyTable/_CompanyTableLoggedIn");
-}
-else
-{
-    await Html.PartialAsync("~/Pages/CompanyTable/_CompanyTableNotLoggedIn.cshtml");
-}
+<div id="companyTable">
+    @if (loogedIn)
+    {
+        await Html.RenderPartialAsync("CompanyTable/_CompanyTableLoggedIn", Model.TableValues);
+    }
+    else
+    {
+        
+    }
+</div>
+
 
 
 

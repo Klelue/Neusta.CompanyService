@@ -31,7 +31,7 @@ namespace Neusta.CompamyService.Gui
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
-            services.AddScoped<ICompanyService, Services.CompanyService>();
+            services.AddScoped<ICompanyService, CompanyService>();
             services.AddHttpClient();
 
             services.AddScoped(

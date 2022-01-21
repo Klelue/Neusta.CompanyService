@@ -1,16 +1,14 @@
-﻿@using Neusta.CompamyService.Gui.CompanyServiceApi
+﻿@page 
+@using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.Models.TableModel
-@{
-    Layout = null;
-}
 
-
-<table>
-    <thead>
-        @if (Model.attributes != null)
+<div style="overflow: auto">
+    <table class="table table-striped">
+        <thead>
+        @if (Model.Attributes != null)
         {
             <tr>
-                @foreach (CompanyAttributeDto attribute in Model.attributes)
+                @foreach (var attribute in Model.Attributes)
                 {
                     <th>
                         @Html.DisplayName(attribute.Name)
@@ -18,19 +16,23 @@
                 }
             </tr>
         }
-    </thead>
-    <tbody>
-        @if (Model.companies != null)
+        </thead>
+
+        <tbody>
+        @if (Model.Companies != null)
         {
-            @foreach (CompanyDto company in Model.companies)
+            @foreach (var company in Model.Companies)
             {
                 <tr>
-                    @foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
+                    @foreach (var value in company.CompanyAttributeValues)
                     {
-                        @Html.DisplayName(value.Value)
+                        <td>
+                            @Html.DisplayName(value.Value)
+                        </td>
                     }
                 </tr>
             }
         }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
