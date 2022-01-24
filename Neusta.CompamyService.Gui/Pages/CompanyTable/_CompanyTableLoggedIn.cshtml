@@ -9,8 +9,7 @@
             {
                 <tr>
                     <th>
-                        @{ var url = Url.Page("AddAttribute");}
-                        <input type="button" onlick="ShowAddAttribute(@url)" class="btn btn-primary" value="+">
+                        <input type="button" onclick="ShowModal()" class="btn btn-primary" value="+">
                     </th>
 
                     @foreach (var attribute in Model.Attributes)
@@ -18,8 +17,8 @@
 
                         <th>
                             <form asp-page-handler="Attribute" id="attributeForm" method="post">
-                                <input type="text" id="attributeName" value="@(attribute.Name)" />
-                                <input type="hidden" id="attribute" value="@(attribute)" />
+                                <input type="text" name="attributeName" value="@(attribute.Name)" />
+                                <input type="hidden" name="attributeId" value="@(attribute.Id)" />
                             </form>
                         </th>
                     }
@@ -33,15 +32,16 @@
                 {
                     <tr>
                         <td>
-                            <button class="btn btn-primary">Edit</button>
+                            <button class="btn btn-primary" data-id="@company.Id" data-toggle="modal" data-target="#edit">Edit</button>
                         </td>
                         @foreach (var value in company.CompanyAttributeValues)
                         {
                             <td>
-                                <form asp-page-handler="Value" id="valueForm" method="post">
-                                    <input type="text" id="valueNameId" value="@(value.Value)" />
-                                    <input type="hidden" id="value" value="@(value)" />
-                                    UpdateAttributeByPressingButton(valueNameId, valueForm)
+                                <form asp-page-handler="UpdateValue" id="valueForm" method="post">
+                                    <input type="text" name="valueName" value="@(value.Value)" />
+                                    <input type="hidden" name="companyId" value="@(value.CompanyId)" />
+                                    <input type="hidden" name="attributeId" value="@(value.CompanyAttributeId)"/>
+
                                 </form>
                             </td>
                         }
@@ -49,8 +49,11 @@
                         @for (var index = 0; index < Model.Attributes.Count - company.CompanyAttributeValues.Count; index++)
                         {
                             <td>
-                                <form asp-page-handler="Update" method="post">
-                                    <input type="text" value="" />
+                                <form asp-page-handler="Value" method="post">
+                                    @{ int attributeid = company.CompanyAttributeValues.Count + index + 1;}
+                                    <input type="text" name="valueName" value=""/>
+                                    <input type="hidden" name="companyId" value="@company.Id"/>
+                                    <input type="hidden" name="attributeId" value="@attributeid"/>
                                 </form>
                             </td>
                         }

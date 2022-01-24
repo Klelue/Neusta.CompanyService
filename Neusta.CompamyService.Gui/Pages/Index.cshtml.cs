@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +13,13 @@ namespace Neusta.CompamyService.Gui.Pages
     public class IndexModel : PageModel
     {
         public TableValues TableValues { get; set; }
-        private ICompanyService companyService;
+       // public TableModel Table { get; set; }
+        private readonly ICompanyService _companyService;
 
         public IndexModel(ICompanyService service)
         {
-            companyService = service;
+            _companyService = service;
+         //   Table = new TableModel(_companyService);
         }
         public async Task<IActionResult> OnGetAsync()
         {
@@ -24,25 +29,60 @@ namespace Neusta.CompamyService.Gui.Pages
 
         private async Task LoadValues()
         {
-            TableValues = new TableValues (companyService)
+            TableValues = new TableValues (_companyService)
             {
-                Companies = await companyService.Get(),
-                Attributes = await companyService.GetAttributes()
+                Companies = await _companyService.Get(),
+                Attributes = await _companyService.GetAttributes()
             };
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await companyService.Save(new CompanyDto());
+            await _companyService.Save(new CompanyDto());
+            return await GetTablePartial();
+        }
+
+        public async Task<IActionResult> OnPostAttributeAsync()
+        {
+            long requestId = Int64.Parse(Request.Form["attributeId"]);
+            LoadValues();
+            CompanyAttributeDto attribute = TableValues.Attributes.First(a => a.Id == requestId);
+            attribute.Name = Request.Form["attributeName"].ToString();
+            await _companyService.UpdateAttribute(attribute);
+
+            return await GetTablePartial();
+        }
+
+        public async Task<IActionResult> OnPostUpdateValueAsync()
+        {
+            CompanyAttributeValueDto value = new CompanyAttributeValueDto()
+            {
+                CompanyId = Int64.Parse(Request.Form["companyId"]),
+                CompanyAttributeId = Int64.Parse(Request.Form["attributeId"]),
+                Value = Request.Form["valueName"].ToString()
+            };
+            await _companyService.UpdateAttributeValue(value);
+
+            return await GetTablePartial();
+        }
+
+        public async Task<IActionResult> OnPostValueAsync()
+        {
+            CompanyAttributeValueDto value = new CompanyAttributeValueDto()
+            {
+                CompanyId = Int64.Parse(Request.Form["companyId"]),
+                CompanyAttributeId = Int64.Parse(Request.Form["attributeId"]),
+                Value = Request.Form["valueName"].ToString()
+            };
+            await _companyService.SaveAttributeValue(value);
+            return await GetTablePartial();
+        }
+
+        private async Task<IActionResult> GetTablePartial()
+        {
             await LoadValues();
             return Partial("CompanyTable/_CompanyTableLoggedIn", TableValues);
         }
 
-        public async Task<IActionResult> OnPostAttributeAsync(string attributeName, CompanyAttributeDto attribute)
-        {
-            attribute.Name = attributeName;
-            await companyService.UpdateAttribute(attribute);
-            return Partial("CompanyTable/_CompanyTableLoggedIn", TableValues);
-        }
     }
 }

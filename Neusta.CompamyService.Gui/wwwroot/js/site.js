@@ -7,7 +7,7 @@ const EnterKeyCode = 13;
 
 function ShowAddAttribute (url) {
     $.ajax({
-        type: 'GET',
+        type: "GET",
         url: url,
         success: function(response) {
             $("#form-modal .modal-body").html(response);
@@ -17,15 +17,32 @@ function ShowAddAttribute (url) {
     });
 };
 
+ShowAddAttribute2 = (url) => {
+    $("#form-modal .modal-title").html("Attribute hinzufügen");
+    ShowModal(url);
+}
+
+ShowModal = () => {
+    $(function() {
+        $("#form-modal .modal-body").load('/Edit/');
+    });
+}
+
+ShowEdit = (url, button) => {
+    $(function() {
+        $(button).on("click", ShowModal(url));
+    });
+}
+
 IndexFunction = (url, data) => {
     $.ajax({
-        type: 'POST',
+        type: "POST",
         url: url,
         data: data,
         contentType: "application/json; charset=utf-8",
         dataType: "html",
         success: function(response) {
-            $('#companyTable').html(response);
+            $("#companyTable").html(response);
         },
         failure: function (response) {
             alert(response.responseText);
@@ -37,12 +54,12 @@ IndexFunction = (url, data) => {
 };
 
 function UpdateAttributeByPressingButton () {
-    var element = document.getElementById('attributeName');
+    var element = document.getElementById("attributeName");
 
     element.addEventListener("keyup",
         function(event) {
             if (event.keyCode === EnterKeyCode) {
-                document.getElementById('attributeForm').submit();
+                document.getElementById("attributeForm").submit();
             }
         });
 };

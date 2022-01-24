@@ -11,7 +11,6 @@ namespace Neusta.CompamyService.Gui.Models
     {
         public IList<CompanyAttributeDto> Attributes;
         public IList<CompanyDto> Companies;
-        public TableValues TableValues { get; set; }
 
         private ICompanyService companyService;
 
@@ -22,12 +21,10 @@ namespace Neusta.CompamyService.Gui.Models
 
         public async Task<PartialViewResult> OnGetAsync()
         {
-            TableValues = new TableValues(companyService)
-            {
-                Companies = await companyService.Get(),
-                Attributes = await companyService.GetAttributes()
-            };
-            return Partial("CompanyTable/_CompanyTableLoggedIn", TableValues);
+            Companies = await companyService.Get();
+            Attributes = await companyService.GetAttributes();
+         
+            return Partial("CompanyTable/_CompanyTableNotLoggedIn", this);
         }
 
         public async Task OnPostAsync()
