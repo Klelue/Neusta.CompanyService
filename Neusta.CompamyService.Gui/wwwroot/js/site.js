@@ -3,19 +3,28 @@
 
 // Write your JavaScript code.
 
-const EnterKeyCode = 13;
 
-function ShowAddAttribute (url) {
+/*$(function () {
+    $('button[data-toggle="AddAttribute-Modal"]').click(function (event) {
     $.ajax({
         type: "GET",
-        url: url,
+        url: $(this).data('url'),
         success: function(response) {
             $("#form-modal .modal-body").html(response);
             $("#form-modal .modal-title").html("Attribute hinzufügen");
             $("#form-modal").showModal();
         }
     });
-};
+};*/
+
+$(function() {
+    $('button[data-toggle="AddAttribute-Modal"]').click(function(event) {
+        var url = $(this).data('url');
+        $.get(url).done(function(data) {
+            $(document.body).append(data).find('.modal').modal('show');
+        });
+    });
+});
 
 ShowAddAttribute2 = (url) => {
     $("#form-modal .modal-title").html("Attribute hinzufügen");
@@ -53,13 +62,3 @@ IndexFunction = (url, data) => {
     });
 };
 
-function UpdateAttributeByPressingButton () {
-    var element = document.getElementById("attributeName");
-
-    element.addEventListener("keyup",
-        function(event) {
-            if (event.keyCode === EnterKeyCode) {
-                document.getElementById("attributeForm").submit();
-            }
-        });
-};

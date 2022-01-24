@@ -9,14 +9,14 @@
             {
                 <tr>
                     <th>
-                        <input type="button" onclick="ShowModal()" class="btn btn-primary" value="+">
+                        <button type="button" class="btn btn-primary" data-toggle="AddAttribute-Modal" data-url="@Url.Page("Index", "EditModalPartial")">+</button>
                     </th>
 
                     @foreach (var attribute in Model.Attributes)
                     {
 
                         <th>
-                            <form asp-page-handler="Attribute" id="attributeForm" method="post">
+                            <form asp-page-handler="UpdateAttribute" id="attributeForm" method="post">
                                 <input type="text" name="attributeName" value="@(attribute.Name)" />
                                 <input type="hidden" name="attributeId" value="@(attribute.Id)" />
                             </form>

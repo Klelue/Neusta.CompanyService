@@ -50,3 +50,4 @@ namespace Neusta.CompamyService.Gui.Models
         }
     }
 }
+

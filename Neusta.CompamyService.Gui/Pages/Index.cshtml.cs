@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
 using Neusta.CompamyService.Gui.Models;
 using Neusta.CompamyService.Gui.Services;
@@ -24,6 +23,14 @@ namespace Neusta.CompamyService.Gui.Pages
             return Page();
         }
 
+        public PartialViewResult OnGetEditModalPartial()
+        {
+            return new PartialViewResult()
+            {
+                ViewName = "AddAttribute",
+            };
+        }
+
         private async Task LoadValues()
         {
             TableValues = new TableValues(_companyService)
@@ -33,13 +40,24 @@ namespace Neusta.CompamyService.Gui.Pages
             };
         }
 
+        public async Task<IActionResult> OnPostAttributeAsync()
+        {
+            CompanyAttributeDto attribute = new CompanyAttributeDto()
+            {
+                Name = Request.Form["attributeName"].ToString()
+            };
+            await _companyService.SaveAttribute(attribute);
+
+            return await GetTablePartial();
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
             await _companyService.Save(new CompanyDto());
             return await GetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostAttributeAsync()
+        public async Task<IActionResult> OnPostUpdateAttributeAsync()
         {
             var requestId = long.Parse(Request.Form["attributeId"]);
             var att = await _companyService.GetAttributes();
@@ -52,18 +70,19 @@ namespace Neusta.CompamyService.Gui.Pages
 
         public async Task<IActionResult> OnPostUpdateValueAsync()
         {
-            var value = new CompanyAttributeValueDto()
-            {
-                CompanyId = long.Parse(Request.Form["companyId"]),
-                CompanyAttributeId = long.Parse(Request.Form["attributeId"]),
-                Value = Request.Form["valueName"].ToString()
-            };
+            var value = CompanyAttributeValueDto();
             await _companyService.UpdateAttributeValue(value);
-
             return await GetTablePartial();
         }
 
         public async Task<IActionResult> OnPostValueAsync()
+        {
+            var value = CompanyAttributeValueDto();
+            await _companyService.SaveAttributeValue(value);
+            return await GetTablePartial();
+        }
+
+        private CompanyAttributeValueDto CompanyAttributeValueDto()
         {
             var value = new CompanyAttributeValueDto()
             {
@@ -71,8 +90,7 @@ namespace Neusta.CompamyService.Gui.Pages
                 CompanyAttributeId = long.Parse(Request.Form["attributeId"]),
                 Value = Request.Form["valueName"].ToString()
             };
-            await _companyService.SaveAttributeValue(value);
-            return await GetTablePartial();
+            return value;
         }
 
         private async Task<IActionResult> GetTablePartial()
