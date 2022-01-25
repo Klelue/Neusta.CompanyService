@@ -6,6 +6,8 @@ namespace Neusta.CompanyService.DTOs
     {
         public long Id { get; set; }
 
+        public bool Visible { get; set; }
+
         public List<CompanyAttributeValueDto> CompanyAttributeValues { get; set; }
     }
 }

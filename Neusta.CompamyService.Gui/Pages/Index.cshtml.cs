@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
 using Neusta.CompamyService.Gui.Models;
 using Neusta.CompamyService.Gui.Services;
@@ -23,7 +26,7 @@ namespace Neusta.CompamyService.Gui.Pages
             return Page();
         }
 
-        public PartialViewResult OnGetEditModalPartial()
+        public PartialViewResult OnGetAddAttributeModalPartial()
         {
             return new PartialViewResult()
             {
@@ -31,20 +34,20 @@ namespace Neusta.CompamyService.Gui.Pages
             };
         }
 
-        private async Task LoadValues()
+        public PartialViewResult OnGetEditModalPartial(CompanyDto company)
         {
-            TableValues = new TableValues(_companyService)
+            return new PartialViewResult()
             {
-                Companies = await _companyService.Get(),
-                Attributes = await _companyService.GetAttributes()
+                ViewName = "Edit",
+                ViewData = new ViewDataDictionary<CompanyDto>(ViewData, company)
             };
         }
 
-        public async Task<IActionResult> OnPostAttributeAsync()
+        public async Task<IActionResult> OnPostAttributeAsync(string attributeName)
         {
             CompanyAttributeDto attribute = new CompanyAttributeDto()
             {
-                Name = Request.Form["attributeName"].ToString()
+                Name = attributeName
             };
             await _companyService.SaveAttribute(attribute);
 
@@ -57,14 +60,20 @@ namespace Neusta.CompamyService.Gui.Pages
             return await GetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostUpdateAttributeAsync()
+        public async Task<IActionResult> OnPostUpdateAttributeAsync(long attributeId, string attributeName)
         {
-            var requestId = long.Parse(Request.Form["attributeId"]);
-            var att = await _companyService.GetAttributes();
-            var attribute = att.Find(a => a.Id == requestId);
-            attribute.Name = Request.Form["attributeName"].ToString();
+            IList<CompanyAttributeDto> att = await _companyService.GetAttributes();
+            var attribute = att.First(a => a.Id == attributeId);
+            attribute.Name = attributeName;
             await _companyService.UpdateAttribute(attribute);
 
+            return await GetTablePartial();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync()
+        {
+            long companyId = long.Parse(Request.Form["companyId"]);
+            await _companyService.Delete(companyId);
             return await GetTablePartial();
         }
 
@@ -97,6 +106,15 @@ namespace Neusta.CompamyService.Gui.Pages
         {
             await LoadValues();
             return Partial("CompanyTable/_CompanyTableLoggedIn", TableValues);
+        }
+
+        private async Task LoadValues()
+        {
+            TableValues = new TableValues()
+            {
+                Companies = await _companyService.Get(),
+                Attributes = await _companyService.GetAttributes()
+            };
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Neusta.CompanyService.Api.Controllers
             return _companyService.GetById(id);
         }
 
-        [HttpDelete("companyID")]
+        [HttpDelete("companyId")]
         public ActionResult Delete(long id)
         {
             _companyService.Delete(id);
@@ -52,7 +52,13 @@ namespace Neusta.CompanyService.Api.Controllers
         [HttpGet("/attributes")]
         public IList<CompanyAttributeDto> GetAllAttributes()
         {
-            return _companyService.GetAllAttributeDtos();
+            return _companyService.GetAllAttributes();
+        }
+
+        [HttpGet("/attributes/attributeId")]
+        public CompanyAttributeDto GetAttribute(long id)
+        {
+            return _companyService.GetAttributeById(id);
         }
 
         [HttpPost("/attributes")]
@@ -66,6 +72,13 @@ namespace Neusta.CompanyService.Api.Controllers
         public ActionResult PutAttribute(CompanyAttributeDto attribute)
         {
             _companyService.UpdateAttribute(attribute);
+            return Ok();
+        }
+
+        [HttpDelete("/attributes")]
+        public ActionResult DeleteAttribute(long id)
+        {
+            _companyService.DeleteAttribute(id);
             return Ok();
         }
 

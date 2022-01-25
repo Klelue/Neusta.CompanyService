@@ -9,7 +9,7 @@
             {
                 <tr>
                     <th>
-                        <button type="button" class="btn btn-primary" data-toggle="AddAttribute-Modal" data-url="@Url.Page("Index", "EditModalPartial")">+</button>
+                        <button type="button" class="btn btn-primary" data-toggle="AddAttribute-Modal" data-url="@Url.Page("Index", "AddAttributeModalPartial")">+</button>
                     </th>
 
                     @foreach (var attribute in Model.Attributes)
@@ -32,7 +32,21 @@
                 {
                     <tr>
                         <td>
-                            <button class="btn btn-primary" data-id="@company.Id" data-toggle="modal" data-target="#edit">Edit</button>
+                            <div id="companyEdit">
+                                <button type="button" class="btn btn-default" asp-page-handler="Delete" aria-label="Left Align">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                                <div>
+                                    <input id="companyVisible" type="checkbox" value="@company.Visible" onchange=""/>
+                                    <label for="companyVisible">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                    </label>
+                                </div>
+                                
+                            </div>
+                            @*
+                            <button type="button" class="btn btn-primary" data-toggle="Edit-Modal" data-url="@Url.Page("Index", "EditModalPartial", company)">Edit</button>
+                        *@
                         </td>
                         @foreach (var value in company.CompanyAttributeValues)
                         {
@@ -41,7 +55,6 @@
                                     <input type="text" name="valueName" value="@(value.Value)" />
                                     <input type="hidden" name="companyId" value="@(value.CompanyId)" />
                                     <input type="hidden" name="attributeId" value="@(value.CompanyAttributeId)"/>
-
                                 </form>
                             </td>
                         }

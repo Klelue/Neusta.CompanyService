@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Neusta.CompanyService.Database.Contexts;
 using Neusta.CompanyService.Database.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Neusta.CompanyService.Database.Repositories
 {
@@ -12,8 +12,9 @@ namespace Neusta.CompanyService.Database.Repositories
 
         public CompanyRepository(CompanyServiceDbContext dbContext)
         {
-            this._dbContext = dbContext;
+            _dbContext = dbContext;
         }
+
         public List<Company> GetAll()
         {
             return _dbContext.Company
@@ -26,6 +27,14 @@ namespace Neusta.CompanyService.Database.Repositories
             return _dbContext.Company
                 .Where(company => company.Id == id)
                 .Include(company => company.CompanyAttributeValues)
+                .FirstOrDefault();
+        }
+
+        public CompanyAttribute GetAttributeById(long id)
+        {
+            return _dbContext.CompanyAttribute
+                .Where(attribute => attribute.Id == id)
+                .Include(attribute => attribute.CompanyAttributeValues)
                 .FirstOrDefault();
         }
 
@@ -50,12 +59,10 @@ namespace Neusta.CompanyService.Database.Repositories
 
         public void Delete(long id)
         {
-            Company company = GetById(id);
+            var company = GetById(id);
 
             if (company.CompanyAttributeValues != null)
-            {
                 _dbContext.CompanyAttributeValue.RemoveRange(company.CompanyAttributeValues);
-            }
 
             _dbContext.Remove(company);
             _dbContext.SaveChanges();
@@ -69,13 +76,9 @@ namespace Neusta.CompanyService.Database.Repositories
 
         public void DeleteAttribute(long id)
         {
-            CompanyAttribute companyAttribute = _dbContext.CompanyAttribute
-                .Where(companyAttribute => companyAttribute.Id == id).FirstOrDefault();
-
+            var companyAttribute = GetAttributeById(id);
             if (companyAttribute.CompanyAttributeValues != null)
-            {
                 _dbContext.CompanyAttributeValue.RemoveRange(companyAttribute.CompanyAttributeValues);
-            }
 
             _dbContext.CompanyAttribute.Remove(companyAttribute);
             _dbContext.SaveChanges();

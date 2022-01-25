@@ -9,6 +9,8 @@ namespace Neusta.CompanyService.Database.Repositories
 
         public Company GetById(long id);
 
+        public CompanyAttribute GetAttributeById(long id);
+
         public List<CompanyAttribute> GetAllAttributes();
 
         public void Save(Company company);

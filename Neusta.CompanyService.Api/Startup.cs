@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,10 +28,16 @@ namespace Neusta.CompanyService.Api
         {
 
             services.AddControllers();
-            services.AddScoped<ICompanyMapper, CompanyMapper>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<ICompanyService, Services.CompanyService>();
             services.AddScoped<ICompanyValidator, CompanyValidator>();
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new DomainToDtoMappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddDbContext<CompanyServiceDbContext>(option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 

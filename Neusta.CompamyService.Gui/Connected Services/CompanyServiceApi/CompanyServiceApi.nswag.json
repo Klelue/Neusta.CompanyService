@@ -109,7 +109,7 @@
         "tags": [
           "Company"
         ],
-        "operationId": "companyId",
+        "operationId": "companyIdGET",
         "parameters": [
           {
             "name": "id",
@@ -142,14 +142,12 @@
             }
           }
         }
-      }
-    },
-    "/api/Company/companyID": {
+      },
       "delete": {
         "tags": [
           "Company"
         ],
-        "operationId": "companyID",
+        "operationId": "companyIdDELETE",
         "parameters": [
           {
             "name": "id",
@@ -326,6 +324,67 @@
             "description": "Success"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "attributesDELETE",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/attributes/attributeId": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "attributeId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAttributeDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAttributeDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAttributeDto"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -357,6 +416,9 @@
             "type": "integer",
             "format": "int64"
           },
+          "visible": {
+            "type": "boolean"
+          },
           "companyAttributeValues": {
             "type": "array",
             "nullable": true,
@@ -377,6 +439,13 @@
           "name": {
             "type": "string",
             "nullable": true
+          },
+          "orderNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "visible": {
+            "type": "boolean"
           },
           "companyAttributeValues": {
             "type": "array",

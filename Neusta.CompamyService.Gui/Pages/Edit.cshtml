@@ -1,4 +1,4 @@
-﻿
+﻿@model Neusta.CompamyService.Gui.CompanyServiceApi.CompanyDto
 @{
 }
 
@@ -12,7 +12,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                test
+                @(Model.Id)
+                
+                <form asp-page-handler="Delete" method="post">
+                    <input type="hidden" name="companyId" value="@Model.Id"/>
+                    <button class="btn btn-default">Löschen</button>
+                </form>
             </div>
         </div>
     </div>
