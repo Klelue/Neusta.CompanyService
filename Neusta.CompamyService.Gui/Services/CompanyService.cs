@@ -40,6 +40,12 @@ namespace Neusta.CompamyService.Gui.Services
             await _companyApi.ApiCompanyPutAsync(company);
         }
 
+        public async Task<CompanyAttributeDto> GetAttributeById(long id)
+        {
+            //TODO
+            return null;
+        }
+
         public async Task UpdateAttribute(CompanyAttributeDto attribute)
         {
             await _companyApi.AttributesPutAsync(attribute);
@@ -58,6 +64,11 @@ namespace Neusta.CompamyService.Gui.Services
         public async Task Delete(long companyId)
         {
             await _companyApi.ApiCompanyCompanyidDeleteAsync(companyId);
+        }
+
+        public async Task DeleteAttribute(long id)
+        {
+            await _companyApi.ApiCompanyCompanyidDeleteAsync(id);
         }
     }
 }

@@ -5,74 +5,95 @@
 <div style="overflow: auto">
     <table class="table table-bordered">
         <thead>
-            @if (Model.Attributes != null)
+        @if (Model.Attributes != null)
+        {
+            <tr>
+                <th>
+                    <button type="button" class="btn btn-primary" data-toggle="AddAttribute-Modal" data-url="@Url.Page("Index", "AddAttributeModalPartial")">+</button>
+                </th>
+
+                @foreach (var attribute in Model.Attributes)
+                {
+                    <th>
+                        <span>
+                            <form asp-page-handler="UpdateAttribute" id="attributeForm" method="post">
+                                <input type="text" name="attributeName" value="@(attribute.Name)"/>
+                                <input type="hidden" name="attributeId" value="@(attribute.Id)"/>
+                            </form>
+
+                            <form asp-page-handler="DeleteAttribute" method="post">
+                                <input type="hidden" name="attributeId" value="@(attribute.Id)"/>
+                                <button type="submit" class="btn btn-primary"aria-label="Left Align">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true">❌</span>
+                                </button>
+                            </form>
+                        </span>
+                    </th>
+                }
+            </tr>
+        }
+        </thead>
+        <tbody>
+        @if (Model.Companies != null)
+        {
+            @foreach (var company in Model.Companies)
             {
                 <tr>
-                    <th>
-                        <button type="button" class="btn btn-primary" data-toggle="AddAttribute-Modal" data-url="@Url.Page("Index", "AddAttributeModalPartial")">+</button>
-                    </th>
-
-                    @foreach (var attribute in Model.Attributes)
-                    {
-
-                        <th>
-                            <form asp-page-handler="UpdateAttribute" id="attributeForm" method="post">
-                                <input type="text" name="attributeName" value="@(attribute.Name)" />
-                                <input type="hidden" name="attributeId" value="@(attribute.Id)" />
+                    <td>
+                        <div id="companyEdit">
+                            <form asp-page-handler="Delete" method="post">
+                                <input type="hidden" name="id" value="@company.Id"/>
+                                <button type="submit" class="btn btn-primary"aria-label="Left Align">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true">❌</span>
+                                </button>
                             </form>
-                        </th>
+
+                            <div>
+                                <form asp-page-handler="Update" method="post"></form>
+                                @{
+                                    var check = "";
+                                    @if (@company.Visible)
+                                    {
+                                        check = "checked";
+                                    }
+                                }
+                                <input type="hidden" name="company" value="@company"/>
+                                <input id="companyVisible" type="checkbox" onclick="this.form.submit()" checked=@check/>
+                                <label for="companyVisible">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </label>
+                            </div>
+
+                        </div>
+                        @*
+                            <button type="button" class="btn btn-primary" data-toggle="Edit-Modal" data-url="@Url.Page("Index", "EditModalPartial", company)">Edit</button>
+                        *@
+                    </td>
+                    @foreach (var value in company.CompanyAttributeValues)
+                    {
+                        <td>
+                            <form asp-page-handler="UpdateValue" id="valueForm" method="post">
+                                <input type="text" name="valueName" value="@(value.Value)"/>
+                                <input type="hidden" name="companyId" value="@(value.CompanyId)"/>
+                                <input type="hidden" name="attributeId" value="@(value.CompanyAttributeId)"/>
+                            </form>
+                        </td>
+                    }
+
+                    @for (var index = 0; index < Model.Attributes.Count - company.CompanyAttributeValues.Count; index++)
+                    {
+                        <td>
+                            <form asp-page-handler="Value" method="post">
+                                @{ var attributeid = company.CompanyAttributeValues.Count + index + 1; }
+                                <input type="text" name="valueName" value=""/>
+                                <input type="hidden" name="companyId" value="@company.Id"/>
+                                <input type="hidden" name="attributeId" value="@attributeid"/>
+                            </form>
+                        </td>
                     }
                 </tr>
             }
-        </thead>
-        <tbody>
-            @if (Model.Companies != null)
-            {
-                @foreach (var company in Model.Companies)
-                {
-                    <tr>
-                        <td>
-                            <div id="companyEdit">
-                                <button type="button" class="btn btn-default" asp-page-handler="Delete" aria-label="Left Align">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                </button>
-                                <div>
-                                    <input id="companyVisible" type="checkbox" value="@company.Visible" onchange=""/>
-                                    <label for="companyVisible">
-                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                    </label>
-                                </div>
-                                
-                            </div>
-                            @*
-                            <button type="button" class="btn btn-primary" data-toggle="Edit-Modal" data-url="@Url.Page("Index", "EditModalPartial", company)">Edit</button>
-                        *@
-                        </td>
-                        @foreach (var value in company.CompanyAttributeValues)
-                        {
-                            <td>
-                                <form asp-page-handler="UpdateValue" id="valueForm" method="post">
-                                    <input type="text" name="valueName" value="@(value.Value)" />
-                                    <input type="hidden" name="companyId" value="@(value.CompanyId)" />
-                                    <input type="hidden" name="attributeId" value="@(value.CompanyAttributeId)"/>
-                                </form>
-                            </td>
-                        }
-
-                        @for (var index = 0; index < Model.Attributes.Count - company.CompanyAttributeValues.Count; index++)
-                        {
-                            <td>
-                                <form asp-page-handler="Value" method="post">
-                                    @{ int attributeid = company.CompanyAttributeValues.Count + index + 1;}
-                                    <input type="text" name="valueName" value=""/>
-                                    <input type="hidden" name="companyId" value="@company.Id"/>
-                                    <input type="hidden" name="attributeId" value="@attributeid"/>
-                                </form>
-                            </td>
-                        }
-                    </tr>
-                }
-            }
+        }
         </tbody>
     </table>
 </div>

@@ -70,10 +70,22 @@ namespace Neusta.CompamyService.Gui.Pages
             return await GetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync()
+        public async Task<IActionResult> OnPostDeleteAsync(long id)
         {
-            long companyId = long.Parse(Request.Form["companyId"]);
-            await _companyService.Delete(companyId);
+            await _companyService.Delete(id);
+            return await GetTablePartial();
+        }
+
+        public async Task<IActionResult> OnPostUpdateAsync(CompanyDto company)
+        {
+            company.Visible = !company.Visible;
+            await _companyService.Update(company);
+            return await GetTablePartial();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAttributeAsync(long attributeId)
+        {
+            await _companyService.DeleteAttribute(attributeId);
             return await GetTablePartial();
         }
 

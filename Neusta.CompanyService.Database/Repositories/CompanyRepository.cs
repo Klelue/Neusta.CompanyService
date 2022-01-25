@@ -60,12 +60,14 @@ namespace Neusta.CompanyService.Database.Repositories
         public void Delete(long id)
         {
             var company = GetById(id);
+            if (company != null)
+            {
+                if (company.CompanyAttributeValues != null)
+                    _dbContext.CompanyAttributeValue.RemoveRange(company.CompanyAttributeValues);
 
-            if (company.CompanyAttributeValues != null)
-                _dbContext.CompanyAttributeValue.RemoveRange(company.CompanyAttributeValues);
-
-            _dbContext.Remove(company);
-            _dbContext.SaveChanges();
+                _dbContext.Remove(company);
+                _dbContext.SaveChanges();
+            }
         }
 
         public void SaveAttribute(CompanyAttribute companyAttribute)
@@ -77,11 +79,14 @@ namespace Neusta.CompanyService.Database.Repositories
         public void DeleteAttribute(long id)
         {
             var companyAttribute = GetAttributeById(id);
-            if (companyAttribute.CompanyAttributeValues != null)
-                _dbContext.CompanyAttributeValue.RemoveRange(companyAttribute.CompanyAttributeValues);
+            if (companyAttribute != null)
+            {
+                if (companyAttribute.CompanyAttributeValues != null)
+                    _dbContext.CompanyAttributeValue.RemoveRange(companyAttribute.CompanyAttributeValues);
 
-            _dbContext.CompanyAttribute.Remove(companyAttribute);
-            _dbContext.SaveChanges();
+                _dbContext.CompanyAttribute.Remove(companyAttribute);
+                _dbContext.SaveChanges();
+            }
         }
 
         public void UpdateAttribute(CompanyAttribute attribute)
