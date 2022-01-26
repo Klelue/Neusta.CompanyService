@@ -6,11 +6,11 @@
 @using Neusta.CompamyService.Gui.Services
 @model Neusta.CompamyService.Gui.Pages.IndexModel
 
-@{ bool loogedIn = User.Identity.IsAuthenticated; }
+@{ var loogedIn = User.Identity.IsAuthenticated; }
 
 <h1 class="text-center">Neusta Companies</h1>
 
-<div id="companyTable">
+<div id="grid">
     @if (loogedIn)
     {
         await Html.RenderPartialAsync("CompanyTable/_CompanyTableLoggedIn", Model.TableValues);
@@ -19,8 +19,4 @@
     {
         await Html.RenderPartialAsync("CompanyTable/_CompanyTableNotLoggedIn", Model.TableValues);
     }
-    </div>
-
-
-
-
+</div>

@@ -1,7 +1,6 @@
 ﻿@using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.Models.TableValues
 
-
 <div style="overflow: auto">
     <table class="table table-bordered">
         <thead>
@@ -15,19 +14,19 @@
                 @foreach (var attribute in Model.Attributes)
                 {
                     <th>
-                        <span>
-                            <form asp-page-handler="UpdateAttribute" id="attributeForm" method="post">
+              
+                            <form asp-page-handler="UpdateAttribute" method="post">
                                 <input type="text" name="attributeName" value="@(attribute.Name)"/>
                                 <input type="hidden" name="attributeId" value="@(attribute.Id)"/>
                             </form>
 
                             <form asp-page-handler="DeleteAttribute" method="post">
-                                <input type="hidden" name="attributeId" value="@(attribute.Id)"/>
+                                <input type="hidden" name="attributId" value="@(attribute.Id)"/>
                                 <button type="submit" class="btn btn-primary"aria-label="Left Align">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true">❌</span>
                                 </button>
                             </form>
-                        </span>
+
                     </th>
                 }
             </tr>
@@ -40,35 +39,31 @@
             {
                 <tr>
                     <td>
-                        <div id="companyEdit">
-                            <form asp-page-handler="Delete" method="post">
-                                <input type="hidden" name="id" value="@company.Id"/>
-                                <button type="submit" class="btn btn-primary"aria-label="Left Align">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true">❌</span>
-                                </button>
-                            </form>
 
-                            <div>
-                                <form asp-page-handler="Update" method="post"></form>
-                                @{
-                                    var check = "";
-                                    @if (@company.Visible)
-                                    {
-                                        check = "checked";
-                                    }
-                                }
-                                <input type="hidden" name="company" value="@company"/>
-                                <input id="companyVisible" type="checkbox" onclick="this.form.submit()" checked=@check/>
-                                <label for="companyVisible">
-                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                </label>
-                            </div>
+                        @*<form asp-page-handler="Delete" method="post">
+                            <input type="hidden" name="id" value="@company.Id"/>
+                            <button type="submit" class="btn btn-primary" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true">❌</span>
+                            </button>
+                        </form>*@
+                         
+                        <form method="post" id="DeleteForm" asp-page-handler="Delete" data-ajax-complete="completed">
+                            <input type="hidden" name="id" value="@company.Id"/>
+                            <button type="submit" name="submit" onclick="UpdateTable" class="btn btn-primary" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true">❌</span>
+                            </button>
+                        </form>
 
-                        </div>
-                        @*
-                            <button type="button" class="btn btn-primary" data-toggle="Edit-Modal" data-url="@Url.Page("Index", "EditModalPartial", company)">Edit</button>
-                        *@
-                    </td>
+                        
+
+                        <form asp-page-handler="Update" method="post">
+                            <input type="hidden" name="id" value="@company.Id" />
+                            <input id="companyVisible" type="checkbox" onchange="this.form.submit()" checked=@(!company.Visible)/>
+                            <label for="companyVisible">
+                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                            </label>
+                        </form>
+</td>
                     @foreach (var value in company.CompanyAttributeValues)
                     {
                         <td>

@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
 using Neusta.CompamyService.Gui.Models;
 using Neusta.CompamyService.Gui.Services;
@@ -26,23 +25,14 @@ namespace Neusta.CompamyService.Gui.Pages
             return Page();
         }
 
-        public PartialViewResult OnGetAddAttributeModalPartial()
+        public async Task<PartialViewResult> OnGetAddAttributeModalPartialAsync()
         {
             return new PartialViewResult()
             {
                 ViewName = "AddAttribute",
             };
         }
-
-        public PartialViewResult OnGetEditModalPartial(CompanyDto company)
-        {
-            return new PartialViewResult()
-            {
-                ViewName = "Edit",
-                ViewData = new ViewDataDictionary<CompanyDto>(ViewData, company)
-            };
-        }
-
+        
         public async Task<IActionResult> OnPostAttributeAsync(string attributeName)
         {
             CompanyAttributeDto attribute = new CompanyAttributeDto()
@@ -51,13 +41,13 @@ namespace Neusta.CompamyService.Gui.Pages
             };
             await _companyService.SaveAttribute(attribute);
 
-            return await GetTablePartial();
+            return await OnGetTablePartial();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             await _companyService.Save(new CompanyDto());
-            return await GetTablePartial();
+            return await OnGetTablePartial();
         }
 
         public async Task<IActionResult> OnPostUpdateAttributeAsync(long attributeId, string attributeName)
@@ -67,54 +57,55 @@ namespace Neusta.CompamyService.Gui.Pages
             attribute.Name = attributeName;
             await _companyService.UpdateAttribute(attribute);
 
-            return await GetTablePartial();
+            return await OnGetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync(long id)
+        public async Task<ActionResult> OnPostDeleteAsync(long id)
         {
             await _companyService.Delete(id);
-            return await GetTablePartial();
+            return await OnGetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostUpdateAsync(CompanyDto company)
+        public async Task<IActionResult> OnPostUpdateAsync(long id)
         {
+            IList<CompanyDto> companies = await _companyService.Get();
+            CompanyDto company = companies.First(c => c.Id == id);
             company.Visible = !company.Visible;
             await _companyService.Update(company);
-            return await GetTablePartial();
+            return await OnGetTablePartial();
         }
 
         public async Task<IActionResult> OnPostDeleteAttributeAsync(long attributeId)
         {
             await _companyService.DeleteAttribute(attributeId);
-            return await GetTablePartial();
+            return await OnGetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostUpdateValueAsync()
+        public async Task<IActionResult> OnPostUpdateValueAsync(long companyId, long attributeId, string valueName)
         {
-            var value = CompanyAttributeValueDto();
+            var value = Value(companyId, attributeId, valueName);
             await _companyService.UpdateAttributeValue(value);
-            return await GetTablePartial();
+            return await OnGetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostValueAsync()
+        public async Task<IActionResult> OnPostValueAsync(long companyId, long attributeId, string valueName)
         {
-            var value = CompanyAttributeValueDto();
+            var value = Value(companyId, attributeId, valueName);
             await _companyService.SaveAttributeValue(value);
-            return await GetTablePartial();
+            return await OnGetTablePartial();
         }
 
-        private CompanyAttributeValueDto CompanyAttributeValueDto()
+        private static CompanyAttributeValueDto Value(long companyId, long attributeId, string valueName)
         {
-            var value = new CompanyAttributeValueDto()
+            return new CompanyAttributeValueDto()
             {
-                CompanyId = long.Parse(Request.Form["companyId"]),
-                CompanyAttributeId = long.Parse(Request.Form["attributeId"]),
-                Value = Request.Form["valueName"].ToString()
+                CompanyId = companyId,
+                CompanyAttributeId = attributeId,
+                Value = valueName
             };
-            return value;
         }
-
-        private async Task<IActionResult> GetTablePartial()
+        
+        private async Task<PartialViewResult> OnGetTablePartial()
         {
             await LoadValues();
             return Partial("CompanyTable/_CompanyTableLoggedIn", TableValues);

@@ -42,7 +42,7 @@ namespace Neusta.CompamyService.Gui.Services
 
         public async Task<CompanyAttributeDto> GetAttributeById(long id)
         {
-            //TODO
+            //TODO companyApi hat nicht die GetAttributeById
             return null;
         }
 
@@ -68,7 +68,7 @@ namespace Neusta.CompamyService.Gui.Services
 
         public async Task DeleteAttribute(long id)
         {
-            await _companyApi.ApiCompanyCompanyidDeleteAsync(id);
+            //TODO companyApi hat nicht die delete attribute
         }
     }
 }

@@ -6,6 +6,7 @@
 
 $(function() {
     $('button[data-toggle="AddAttribute-Modal"]').click(function(event) {
+        UpdateTable();
         var url = $(this).data('url');
         $.get(url).done(function(data) {
             $(document.body).append(data).find('.modal').modal('show');
@@ -13,14 +14,19 @@ $(function() {
     });
 });
 
-$(function() {
-    $('button[data-toggle="Edit-Modal"]').click(function(event) {
-        var url = $(this).data('url');
-        $.get(url).done(function(data) {
-            $(document.body).append(data).find('.modal').modal('show');
+$(function () {
+    $('#submit').on('click', function (evt) {
+        evt.preventDefault();
+        $.post('', $('form').serialize(), function () {
+            alert('Posted using jQuery');
         });
     });
 });
+
+completed = function(res) {
+    alert("Table aktualisiert");
+    $('#grid').load(res);
+};
 
 
 
