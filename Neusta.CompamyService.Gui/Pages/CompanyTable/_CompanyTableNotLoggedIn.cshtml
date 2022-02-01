@@ -9,9 +9,12 @@
             <tr>
                 @foreach (var attribute in Model.Attributes)
                 {
-                    <th>
-                        @Html.DisplayName(attribute.Name)
-                    </th>
+                    if (attribute.Visible)
+                    {
+                        <th>
+                            @Html.DisplayName(attribute.Name)
+                        </th>
+                    }
                 }
             </tr>
         }
@@ -22,14 +25,17 @@
         {
             @foreach (var company in Model.Companies)
             {
-                <tr>
-                    @foreach (var value in company.CompanyAttributeValues)
-                    {
-                        <td>
-                            @Html.DisplayName(value.Value)
-                        </td>
-                    }
-                </tr>
+                if (company.Visible)
+                {
+                    <tr>
+                        @foreach (var value in company.CompanyAttributeValues)
+                        {
+                            <td>
+                                @Html.DisplayName(value.Value)
+                            </td>
+                        }
+                    </tr>
+                }
             }
         }
         </tbody>

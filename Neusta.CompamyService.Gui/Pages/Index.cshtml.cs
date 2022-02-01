@@ -27,10 +27,12 @@ namespace Neusta.CompamyService.Gui.Pages
 
         public async Task<PartialViewResult> OnGetAddAttributeModalPartialAsync()
         {
-            return new PartialViewResult()
-            {
-                ViewName = "AddAttribute",
-            };
+            return Partial("Modals/_AddAttribute");
+        }
+
+        public async Task<PartialViewResult> OnGetEditAttributeModalPartialAsync(IList<CompanyAttributeDto> attributes)
+        {
+            return Partial("_EditAttribute", attributes);
         }
         
         public async Task<IActionResult> OnPostAttributeAsync(string attributeName)
@@ -50,11 +52,18 @@ namespace Neusta.CompamyService.Gui.Pages
             return await OnGetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostUpdateAttributeAsync(long attributeId, string attributeName)
+        public async Task<IActionResult> OnPostUpdateAttributeAsync(long attributeId, string attributeName = null)
         {
             IList<CompanyAttributeDto> att = await _companyService.GetAttributes();
             var attribute = att.First(a => a.Id == attributeId);
-            attribute.Name = attributeName;
+            if (attributeName != null)
+            {
+                attribute.Name = attributeName;
+            }
+            else
+            {
+                attribute.Visible = !attribute.Visible;
+            }
             await _companyService.UpdateAttribute(attribute);
 
             return await OnGetTablePartial();

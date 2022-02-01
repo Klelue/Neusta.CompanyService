@@ -6,7 +6,6 @@
 
 $(function() {
     $('button[data-toggle="AddAttribute-Modal"]').click(function(event) {
-        UpdateTable();
         var url = $(this).data('url');
         $.get(url).done(function(data) {
             $(document.body).append(data).find('.modal').modal('show');
@@ -14,19 +13,55 @@ $(function() {
     });
 });
 
-$(function () {
-    $('#submit').on('click', function (evt) {
-        evt.preventDefault();
-        $.post('', $('form').serialize(), function () {
-            alert('Posted using jQuery');
+$('#AttributeNameForm').submit(function() {
+    $.ajax({
+            type: "post",
+            url: '/?handler=UpdateAttribute',
+            data: $('#AttributeNameForm').serialize()
+        })
+        .done(function() {
+            CallSuccessAlert();
         });
-    });
 });
 
-completed = function(res) {
-    alert("Table aktualisiert");
-    $('#grid').load(res);
+function PostData(url, dataString) {
+
+    var mergedData = MergeDatas(dataString);
+    $.ajax({
+        type: "post",
+        dataType: "html",
+        url: url,
+        data: mergedData
+})
+        .done(function() {
+            CallSuccessAlert();
+            UpdateTable();
+        })
+        .fail(function() {
+            alert("Aktualisieren ist fehlgeschlagen");
+        });
 };
 
+function UpdateTable() {
+    $('#grid').load('/?handler=TablePartial');
+};
 
+function MergeDatas(dataString) {
+    var token = GetRequestVerificationTokenArray();
+    var mergedData = Object.assign(dataString, token);
+    return mergedData;
+};
 
+function GetRequestVerificationTokenArray() {
+    var form = $('#__AjaxAntiForgeryForm');
+    var token = $('input[name="__RequestVerificationToken"]', form).val();
+    var tokenString = {__RequestVerificationToken :  token  };
+    return tokenString;
+};
+
+function CallSuccessAlert() {
+    $('#AlertSuccesss').show('fade');
+    setTimeout(function() {
+        $('#AlertSuccesss').hide('fade');
+    }, 2000);
+};
