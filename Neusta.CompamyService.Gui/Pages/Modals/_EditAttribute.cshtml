@@ -13,24 +13,30 @@
             <div class="modal-body">
                 <h2 class="text-center">Attribute bearbeiten</h2>
                 
-                <form asp-page-handler="UpdateAttribute" method="post">
-                    <div class="form-group">
-                        <input type="text" id="attributeName" name="attributeName" value="@(Model.Name)"/>
+                <form id="attributeForm" asp-page-handler="UpdateAttribute" method="post">
+                    <div class="form-group" align="center">
                         <label for="attributeName">Bezeichnung des Attributes</label>
+                        <input type="text" id="attributeName" name="attributeName" value="@(Model.Name)"/>
                     </div>
-                    
-                    <input id="companyVisible" type="checkbox" checked=@(!Model.Visible)>
+                    <div class="form-group" align="center">
+                        <label for="attributeVisible">Sichtbar <span class="bi-eye" aria-hidden="true"></span></label>
+                        <input id="attributeVisible" type="checkbox" checked=@(!Model.Visible)>
+                    </div>
                 </form>
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-primary" onclick="('#attributeName').submit()">Attribut hinzufügen</button>
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-primary" 
-                                    onclick="PostData('@Url.Page("Index", "DeleteAttribute")', {attributeId : @(Model.Id)} )">
-                            </button>
-                        </div>
+            </div>
+            <div class="modal-footerr">
+                <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                onclick="('#attributeForm').submit()">
+                            Ändern
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                onclick="PostData('@Url.Page("Index", "DeleteAttribute")', { attributeId: @(Model.Id) })">
+                            Löschen
+                        </button>
                     </div>
                 </div>
             </div>

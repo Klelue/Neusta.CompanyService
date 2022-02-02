@@ -1,7 +1,7 @@
 ﻿@using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.Models.TableValues
-@{ Layout = null;}
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+@{ Layout = null; }
+@using (Html.BeginForm(null, null, FormMethod.Post, new {id = "__AjaxAntiForgeryForm"}))
 {
     @Html.AntiForgeryToken()
 }
@@ -10,102 +10,68 @@
 <div name="table" style="overflow: auto">
     <table class="table table-bordered">
         <thead>
-            @if (Model.Attributes != null)
+        @if (Model.Attributes != null)
+        {
+            <tr>
+                <th>
+                    <button type="button" class="btn btn-primary"
+                            data-toggle="AddAttribute-Modal"
+                            data-url="@Url.Page("Index", "AddAttributeModalPartial")">
+                        +
+                    </button>
+                </th>
+
+                @foreach (var attribute in Model.Attributes)
+                {
+                    <th>
+                        <div>
+                            @Html.DisplayName(attribute.Name)
+                            <button type="button" class="btn btn-primary" data-toggle="EditAttribute-Modal"
+                                    data-url="@Url.Page("Index", "EditAttributeModalPartial", attribute)">
+                                <span class="bi-pen" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </th>
+                }
+            </tr>
+        }
+        </thead>
+        <tbody>
+        @if (Model.Companies != null)
+        {
+            @foreach (var company in Model.Companies)
             {
                 <tr>
-                    <th>
-                        <button type="button" class="btn btn-primary" data-toggle="EditAttribute-Modal" data-url="@Url.Page("Index", "EditAttributeModalPartial")">Edit</button>
-                        <button type="button" class="btn btn-primary" 
-                                data-toggle="AddAttribute-Modal"
-                                data-url="@Url.Page("Index", "AddAttributeModalPartial")">+</button>
-                    </th>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="EditCompany-Modal"
+                                data-url="@Url.Page("Index", "EditCompanyModalPartial", company)">
+                            <span class="bi-pen" aria-hidden="true"></span>
+                        </button>
+
+                    </td>
 
                     @foreach (var attribute in Model.Attributes)
                     {
-                        <th>
-                            <div>
-                              <form asp-page-handler="UpdateAttribute" method="post">
-                                    <input type="text" name="attributeName" value="@(attribute.Name)" />
-                                    <input type="hidden" name="id" value="@(attribute.Id)" />
-                                </form>
-
-                                <span>
-                                    <button type="button" class="btn btn-primary" aria-label="Left Align"
-                                            onclick="PostData('@Url.Page("Index", "DeleteAttribute")', {attributeId : @(attribute.Id)} )">
-                                        <span class="bi-trash" aria-hidden="true"></span>
-                                    </button>
-                                </span>
-
-                                <span>
-                                    <input id="companyVisible" type="checkbox" checked=@(!attribute.Visible)
-                                           onchange="PostData('@Url.Page("Index", "UpdateAttribute")', {attributeId : @(attribute.Id)})" />
-                                    <label for="companyVisible">
-                                        <span class="bi-eye" aria-hidden="true"></span>
-                                    </label>
-                                </span>
-                            </div>
-                        </th>
+                        var value = company.CompanyAttributeValues.FirstOrDefault(v => v.CompanyAttributeId == attribute.Id);
+                        var valueName = "";
+                        if (value != null)
+                        {
+                            valueName = value.Value;
+                        }
+                        <td>
+                            @Html.DisplayName(valueName)
+                        </td>
                     }
                 </tr>
             }
-        </thead>
-        <tbody>
-            @if (Model.Companies != null)
-            {
-                @foreach (var company in Model.Companies)
-                {
-                    <tr>
-                        <td>
-                            <div>
-                                <span>
-                                    <button type="button" class="btn btn-primary" aria-label="Left Align"
-                                            onclick="PostData('@Url.Page("Index", "Delete")',{id: @company.Id})">
-                                        <span class="bi-trash" aria-hidden="true"></span>
-                                    </button>
-                                </span>
-
-                                <span>
-                                    <input id="companyVisible" type="checkbox" checked=@(!company.Visible)
-                                           onchange="PostData('@Url.Page("Index", "Update")', {id: @company.Id})" />
-                                    <label for="companyVisible">
-                                        <span class="bi-eye" aria-hidden="true"></span>
-                                    </label>
-                                </span>
-                            </div>
-
-
-                        </td>
-                        @foreach (var value in company.CompanyAttributeValues)
-                        {
-                            <td>
-                                <form asp-page-handler="UpdateValue" id="valueForm" method="post">
-                                    <input type="text" name="valueName" value="@(value.Value)" />
-                                    <input type="hidden" name="companyId" value="@(value.CompanyId)" />
-                                    <input type="hidden" name="attributeId" value="@(value.CompanyAttributeId)" />
-                                </form>
-                            </td>
-                        }
-
-                        @for (var index = 0; index < Model.Attributes.Count - company.CompanyAttributeValues.Count; index++)
-                        {
-                            <td>
-                                <form asp-page-handler="Value" method="post">
-                                    @{ var attributeid = company.CompanyAttributeValues.Count + index + 1; }
-                                    <input type="text" name="valueName" value="" />
-                                    <input type="hidden" name="companyId" value="@company.Id" />
-                                    <input type="hidden" name="attributeId" value="@attributeid" />
-                                </form>
-                            </td>
-                        }
-                    </tr>
-                }
-            }
+        }
         </tbody>
     </table>
 </div>
 
 <div>
-    <form method="post">
-        <button type="submit" class="btn btn-primary">Add Company</button>
-    </form>
+    <button type="button" class="btn btn-primary"
+            onclick="PostData('@Url.Page("Index")')">
+        Company hinzufügen
+    </button>
 </div>

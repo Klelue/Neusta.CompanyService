@@ -28,10 +28,16 @@
                 if (company.Visible)
                 {
                     <tr>
-                        @foreach (var value in company.CompanyAttributeValues)
+                        @foreach (var attribute in Model.Attributes)
                         {
+                            var value = company.CompanyAttributeValues.FirstOrDefault(v => v.CompanyAttributeId == attribute.Id);
+                            var valueName = "";
+                            if (value != null)
+                            {
+                                valueName = value.Value;
+                            }
                             <td>
-                                @Html.DisplayName(value.Value)
+                                @Html.DisplayName(valueName)
                             </td>
                         }
                     </tr>

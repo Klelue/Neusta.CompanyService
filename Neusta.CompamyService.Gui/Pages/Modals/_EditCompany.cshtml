@@ -1,5 +1,5 @@
 ﻿@using Neusta.CompamyService.Gui.CompanyServiceApi
-@model Neusta.CompamyService.Gui.Models.TableValues
+@model Neusta.CompamyService.Gui.Models.EditCompanyModel
 
 <div class="modal fade" tabindex="-1" role="dialog" id="details-modal">
     <div class="modal-dialog" role="document">
@@ -11,14 +11,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h2 class="text-center">Attribut hinzufügen</h2>
+                <h2 class="text-center">Company bearbeiten</h2>
 
 
                 <form id="companyForm" asp-page-handler="Update" method="post">
                     @foreach (CompanyAttributeDto attribute in Model.Attributes )
                     {
-                    <div class="form-group">
-                        <input type="text" id="valueName" name="valueName" value="" />
+                        CompanyAttributeValueDto value = Model.Company.CompanyAttributeValues.FirstOrDefault(v => v.CompanyAttributeId == attribute.Id);
+                        string valueName = "";
+                        if (value != null)
+                        {
+                            valueName = value.Value;
+                        }
+
+                        <div class="form-group">
+                        <input type="text" id="valueName" name="valueName" value="@valueName" />
                         <label for="valueName">@(attribute.Name)</label>
                     </div>
                     }
@@ -29,7 +36,7 @@
                 <div class="row">
                     <div class="col">
                         <button type="button" class="btn btn-primary"
-                                onclick="PostData('@Url.Page(" Index", "DeleteAttribute" )', ' ' )">
+                                onclick="PostData('@Url.Page(" Index", "DeleteAttribute", Model.Company.Id )')">
                         </button>
                     </div>
                     <div class="col">

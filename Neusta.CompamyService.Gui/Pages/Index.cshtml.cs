@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
 using Neusta.CompamyService.Gui.Models;
 using Neusta.CompamyService.Gui.Services;
@@ -30,9 +31,19 @@ namespace Neusta.CompamyService.Gui.Pages
             return Partial("Modals/_AddAttribute");
         }
 
-        public async Task<PartialViewResult> OnGetEditAttributeModalPartialAsync(IList<CompanyAttributeDto> attributes)
+        public async Task<PartialViewResult> OnGetEditAttributeModalPartialAsync(CompanyAttributeDto attribute)
         {
-            return Partial("_EditAttribute", attributes);
+            return Partial("Modals/_EditAttribute", attribute);
+        }
+        
+        public async Task<PartialViewResult> OnGetEditCompanyModalPartialAsync(CompanyDto company)
+        {
+            EditCompanyModel editCompanyModel = new EditCompanyModel()
+            {
+                Attributes = TableValues.Attributes,
+                Company = company
+            };
+            return Partial("Modals/_EditCompany", editCompanyModel);
         }
         
         public async Task<IActionResult> OnPostAttributeAsync(string attributeName)

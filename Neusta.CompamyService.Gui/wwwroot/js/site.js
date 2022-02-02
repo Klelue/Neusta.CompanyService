@@ -13,16 +13,24 @@ $(function() {
     });
 });
 
-$('#AttributeNameForm').submit(function() {
-    $.ajax({
-            type: "post",
-            url: '/?handler=UpdateAttribute',
-            data: $('#AttributeNameForm').serialize()
-        })
-        .done(function() {
-            CallSuccessAlert();
+$(function() {
+    $('button[data-toggle="EditAttribute-Modal"]').click(function(event) {
+        var url = $(this).data('url');
+        $.get(url).done(function(data) {
+            $(document.body).append(data).find('.modal').modal('show');
         });
+    });
 });
+
+$(function() {
+    $('button[data-toggle="EditCopany-Modal"]').click(function(event) {
+        var url = $(this).data('url');
+        $.get(url).done(function(data) {
+            $(document.body).append(data).find('.modal').modal('show');
+        });
+    });
+});
+
 
 function PostData(url, dataString) {
 
@@ -48,7 +56,10 @@ function UpdateTable() {
 
 function MergeDatas(dataString) {
     var token = GetRequestVerificationTokenArray();
-    var mergedData = Object.assign(dataString, token);
+    var mergedData = token;
+    if (dataString != null) {
+        mergedData = Object.assign(dataString, token);
+    }
     return mergedData;
 };
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Neusta.CompamyService.Gui.Models
 {
-    public class TableValues
+    public class EditCompanyModel
     {
         public IList<CompanyAttributeDto> Attributes { get; set; }
-        public IList<CompanyDto> Companies { get; set; }
+        public CompanyDto Company { get; set; }
     }
 }
