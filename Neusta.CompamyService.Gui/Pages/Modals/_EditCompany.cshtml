@@ -1,49 +1,52 @@
 ﻿@using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.Models.EditCompanyModel
 
-<div class="modal fade" tabindex="-1" role="dialog" id="details-modal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Company</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h2 class="text-center">Company bearbeiten</h2>
 
+<h2 class="text-center">Company bearbeiten</h2>
+<form id="companyForm" asp-page-handler="Update" method="post">
+    <input type="hidden" asp-for="Company.Id"/>
 
-                <form id="companyForm" asp-page-handler="Update" method="post">
-                    @foreach (CompanyAttributeDto attribute in Model.Attributes )
-                    {
-                        CompanyAttributeValueDto value = Model.Company.CompanyAttributeValues.FirstOrDefault(v => v.CompanyAttributeId == attribute.Id);
-                        string valueName = "";
-                        if (value != null)
-                        {
-                            valueName = value.Value;
-                        }
+    @for (var index = 0; index < Model.Attributes.Count; index++)
+    {
+        var attribute = Model.Attributes[index];
+        var valueNameString = "";
+        if (Model.Company.CompanyAttributeValues != null)
+        {
+            var value = Model.Company.CompanyAttributeValues.FirstOrDefault(v => v.CompanyAttributeId == attribute.Id);
+            if (value != null)
+            {
+                valueNameString = value.Value;
+            }
+        }
 
-                        <div class="form-group">
-                        <input type="text" id="valueName" name="valueName" value="@valueName" />
-                        <label for="valueName">@(attribute.Name)</label>
-                    </div>
-                    }
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <div class="row">
-                    <div class="col">
-                        <button type="button" class="btn btn-primary"
-                                onclick="PostData('@Url.Page(" Index", "DeleteAttribute", Model.Company.Id )')">
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-primary" onclick="('#companyForm').submit()">Company updaten</button>
-                    </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col">
+                    <label for="valueName">@(attribute.Name)</label>
+                </div>
+                <div class="col">
+                    <input type="text" asp-for="Company.CompanyAttributeValues[index].Value"/>
+                    <input type="hidden" asp-for="Company.CompanyAttributeValues[index].CompanyAttributeId" value="@(attribute.Id)"/>
+                    <input type="hidden" asp-for="Company.CompanyAttributeValues[index].CompanyId" value="@(Model.Company.Id)"/>
                 </div>
             </div>
         </div>
+    }
+
+    <div class="form-group" align="center">
+        <label asp-for="Company.Visible">Sichtbar <span class="bi-eye" aria-hidden="true"></span></label>
+        <input asp-for="Company.Visible" type="checkbox">
+    </div>
+</form>
+
+<div class="row">
+    <div class="col">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                onclick="PostData('@Url.Page("Index", "Delete")', { id: @(Model.Company.Id) })">
+            Löschen
+        </button>
+    </div>
+    <div class="col">
+        <input type="submit" class="btn btn-primary" form="companyForm" value="Update"/>
     </div>
 </div>

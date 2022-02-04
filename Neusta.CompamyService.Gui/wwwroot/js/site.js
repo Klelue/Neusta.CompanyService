@@ -3,55 +3,43 @@
 
 // Write your JavaScript code.
 
-
-$(function() {
-    $('button[data-toggle="AddAttribute-Modal"]').click(function(event) {
-        var url = $(this).data('url');
-        $.get(url).done(function(data) {
-            $(document.body).append(data).find('.modal').modal('show');
-        });
+function submitForm() {
+    $('#attributeForm').submit().done(function(result) {
+        CallSuccessAlert();
+        $('#grid').html(result);
     });
-});
-
-$(function() {
-    $('button[data-toggle="EditAttribute-Modal"]').click(function(event) {
-        var url = $(this).data('url');
-        $.get(url).done(function(data) {
-            $(document.body).append(data).find('.modal').modal('show');
-        });
-    });
-});
-
-$(function() {
-    $('button[data-toggle="EditCopany-Modal"]').click(function(event) {
-        var url = $(this).data('url');
-        $.get(url).done(function(data) {
-            $(document.body).append(data).find('.modal').modal('show');
-        });
-    });
-});
+}
 
 
 function PostData(url, dataString) {
-
-    var mergedData = MergeDatas(dataString);
     $.ajax({
-        type: "post",
-        dataType: "html",
-        url: url,
-        data: mergedData
-})
-        .done(function() {
+            type: "post",
+            dataType: "html",
+            url: url,
+            data: MergeDatas(dataString)
+        })
+        .done(function(result) {
             CallSuccessAlert();
-            UpdateTable();
+            $('#grid').html(result);
         })
         .fail(function() {
             alert("Aktualisieren ist fehlgeschlagen");
         });
 };
 
-function UpdateTable() {
-    $('#grid').load('/?handler=TablePartial');
+function PopUpModal(url, title) {
+    $.ajax({
+            type: "get",
+            url: url
+        })
+        .done(function(result) {
+            $('.modal-title').html(title);
+            $('.modal-body').html(result);
+            $('#modal').modal('show');
+        })
+        .fail(function() {
+            alert("Modal konnte nicht geladen werden");
+        });
 };
 
 function MergeDatas(dataString) {
@@ -64,15 +52,16 @@ function MergeDatas(dataString) {
 };
 
 function GetRequestVerificationTokenArray() {
-    var form = $('#__AjaxAntiForgeryForm');
+    var form = $("#__AjaxAntiForgeryForm");
     var token = $('input[name="__RequestVerificationToken"]', form).val();
-    var tokenString = {__RequestVerificationToken :  token  };
+    var tokenString = { __RequestVerificationToken: token };
     return tokenString;
 };
 
 function CallSuccessAlert() {
-    $('#AlertSuccesss').show('fade');
+    $("#AlertSuccess").show("fade");
     setTimeout(function() {
-        $('#AlertSuccesss').hide('fade');
-    }, 2000);
+            $("#AlertSuccess").hide("fade");
+        },
+        2000);
 };

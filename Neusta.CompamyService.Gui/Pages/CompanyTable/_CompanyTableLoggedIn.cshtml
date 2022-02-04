@@ -1,11 +1,11 @@
 ﻿@using Neusta.CompamyService.Gui.CompanyServiceApi
+@using Neusta.CompamyService.Gui.Models
 @model Neusta.CompamyService.Gui.Models.TableValues
 @{ Layout = null; }
 @using (Html.BeginForm(null, null, FormMethod.Post, new {id = "__AjaxAntiForgeryForm"}))
 {
     @Html.AntiForgeryToken()
 }
-
 
 <div name="table" style="overflow: auto">
     <table class="table table-bordered">
@@ -15,8 +15,7 @@
             <tr>
                 <th>
                     <button type="button" class="btn btn-primary"
-                            data-toggle="AddAttribute-Modal"
-                            data-url="@Url.Page("Index", "AddAttributeModalPartial")">
+                            onclick="PopUpModal('@Url.Page("Index", "AddAttributeModalPartial")', 'Attribut hinzufügen')">
                         +
                     </button>
                 </th>
@@ -24,10 +23,13 @@
                 @foreach (var attribute in Model.Attributes)
                 {
                     <th>
-                        <div>
-                            @Html.DisplayName(attribute.Name)
-                            <button type="button" class="btn btn-primary" data-toggle="EditAttribute-Modal"
-                                    data-url="@Url.Page("Index", "EditAttributeModalPartial", attribute)">
+                        <div class="row" align="center">
+                            <span class="mx-1">
+                                @Html.DisplayName(attribute.Name)
+                            </span>
+
+                            <button type="button" class="btn btn-primary" style="font-size: xx-small"
+                                   onclick="PopUpModal('@Url.Page("Index", "EditAttributeModalPartial", attribute)', 'Attribute bearbeiten')">
                                 <span class="bi-pen" aria-hidden="true"></span>
                             </button>
                         </div>
@@ -43,10 +45,11 @@
             {
                 <tr>
                     <td>
-                        <button type="button" class="btn btn-primary" data-toggle="EditCompany-Modal"
-                                data-url="@Url.Page("Index", "EditCompanyModalPartial", company)">
+                        <button type="button" class="btn btn-primary" 
+                                onclick="PopUpModal('@Url.Page("Index", "EditCompanyModalPartial", company)','Company bearbeiten')">
                             <span class="bi-pen" aria-hidden="true"></span>
                         </button>
+
 
                     </td>
 

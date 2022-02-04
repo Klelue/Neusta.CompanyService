@@ -1,45 +1,33 @@
 ﻿@using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.CompanyServiceApi.CompanyAttributeDto
 
-<div class="modal fade" tabindex="-1" role="dialog" id="details-modal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Attribut</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h2 class="text-center">Attribute bearbeiten</h2>
-                
-                <form id="attributeForm" asp-page-handler="UpdateAttribute" method="post">
-                    <div class="form-group" align="center">
-                        <label for="attributeName">Bezeichnung des Attributes</label>
-                        <input type="text" id="attributeName" name="attributeName" value="@(Model.Name)"/>
-                    </div>
-                    <div class="form-group" align="center">
-                        <label for="attributeVisible">Sichtbar <span class="bi-eye" aria-hidden="true"></span></label>
-                        <input id="attributeVisible" type="checkbox" checked=@(!Model.Visible)>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footerr">
-                <div class="row">
-                    <div class="col">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal"
-                                onclick="('#attributeForm').submit()">
-                            Ändern
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal"
-                                onclick="PostData('@Url.Page("Index", "DeleteAttribute")', { attributeId: @(Model.Id) })">
-                            Löschen
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+<h2 class="text-center">Attribute bearbeiten</h2>
+<form id="attributeForm" asp-page-handler="UpdateAttribute" method="post">
+    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="CompanyAttributeValues"/>
+    <input type="hidden" asp-for="OrderNumber"/>
+    <div class="form-group" align="center">
+        <label asp-for="Name">Bezeichnung des Attributes</label>
+        <input type="text" asp-for="Name"/>
+    </div>
+    <div class="form-group" align="center">
+        <label asp-for="Visible">Sichtbar <span class="bi-eye" aria-hidden="true"></span></label>
+        <input asp-for="Visible" type="checkbox">
+    </div>
+</form>
+
+<div class="row">
+   <div class="col">
+       <button type="button" class="btn btn-primary" data-dismiss="modal"
+               onclick="submitForm()">
+           Update
+       </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                onclick="PostData('@Url.Page("Index", "DeleteAttribute", Model.Id)')">
+            Löschen
+        </button>
     </div>
 </div>

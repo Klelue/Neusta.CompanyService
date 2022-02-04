@@ -1,12 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
 using Neusta.CompamyService.Gui.Models;
 using Neusta.CompamyService.Gui.Services;
+using System.Threading.Tasks;
 
 namespace Neusta.CompamyService.Gui.Pages
 {
@@ -35,20 +32,20 @@ namespace Neusta.CompamyService.Gui.Pages
         {
             return Partial("Modals/_EditAttribute", attribute);
         }
-        
+
         public async Task<PartialViewResult> OnGetEditCompanyModalPartialAsync(CompanyDto company)
         {
-            EditCompanyModel editCompanyModel = new EditCompanyModel()
+            var editCompanyModel = new EditCompanyModel
             {
-                Attributes = TableValues.Attributes,
+                Attributes = await _companyService.GetAttributes(),
                 Company = company
             };
             return Partial("Modals/_EditCompany", editCompanyModel);
         }
-        
+
         public async Task<IActionResult> OnPostAttributeAsync(string attributeName)
         {
-            CompanyAttributeDto attribute = new CompanyAttributeDto()
+            var attribute = new CompanyAttributeDto()
             {
                 Name = attributeName
             };
@@ -63,20 +60,9 @@ namespace Neusta.CompamyService.Gui.Pages
             return await OnGetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostUpdateAttributeAsync(long attributeId, string attributeName = null)
+        public async Task<IActionResult> OnPostUpdateAttributeAsync(CompanyAttributeDto attribute)
         {
-            IList<CompanyAttributeDto> att = await _companyService.GetAttributes();
-            var attribute = att.First(a => a.Id == attributeId);
-            if (attributeName != null)
-            {
-                attribute.Name = attributeName;
-            }
-            else
-            {
-                attribute.Visible = !attribute.Visible;
-            }
             await _companyService.UpdateAttribute(attribute);
-
             return await OnGetTablePartial();
         }
 
@@ -86,11 +72,8 @@ namespace Neusta.CompamyService.Gui.Pages
             return await OnGetTablePartial();
         }
 
-        public async Task<IActionResult> OnPostUpdateAsync(long id)
+        public async Task<IActionResult> OnPostUpdateAsync(CompanyDto company)
         {
-            IList<CompanyDto> companies = await _companyService.Get();
-            CompanyDto company = companies.First(c => c.Id == id);
-            company.Visible = !company.Visible;
             await _companyService.Update(company);
             return await OnGetTablePartial();
         }
@@ -99,30 +82,6 @@ namespace Neusta.CompamyService.Gui.Pages
         {
             await _companyService.DeleteAttribute(attributeId);
             return await OnGetTablePartial();
-        }
-
-        public async Task<IActionResult> OnPostUpdateValueAsync(long companyId, long attributeId, string valueName)
-        {
-            var value = Value(companyId, attributeId, valueName);
-            await _companyService.UpdateAttributeValue(value);
-            return await OnGetTablePartial();
-        }
-
-        public async Task<IActionResult> OnPostValueAsync(long companyId, long attributeId, string valueName)
-        {
-            var value = Value(companyId, attributeId, valueName);
-            await _companyService.SaveAttributeValue(value);
-            return await OnGetTablePartial();
-        }
-
-        private static CompanyAttributeValueDto Value(long companyId, long attributeId, string valueName)
-        {
-            return new CompanyAttributeValueDto()
-            {
-                CompanyId = companyId,
-                CompanyAttributeId = attributeId,
-                Value = valueName
-            };
         }
         
         private async Task<PartialViewResult> OnGetTablePartial()

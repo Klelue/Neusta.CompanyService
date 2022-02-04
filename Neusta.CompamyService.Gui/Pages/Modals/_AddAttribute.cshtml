@@ -1,26 +1,13 @@
-﻿
-<div class="modal fade" tabindex="-1" role="dialog" id="details-modal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Attribut hinzufügen</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h2 class="text-center">Attribut hinzufügen</h2>
-                
-                
-                <form asp-page-handler="Attribute" id="attributeName" method="post">
-                    <div class="form-group">
-                        <label>Attributename angeben</label>
-                        <input  class="form-control" name="attributeName"/>
-                    </div>
+﻿<h2 class="text-center">Attribut hinzufügen</h2>
 
-                    <button type="submit" class="btn btn-primary">Attribut hinzufügen</button>
-                </form>
-            </div>
+<form asp-page-handler="Attribute" id="attributeName" method="post">
+    <div class="form-group">
+        <div>
+
         </div>
+        <label>Attributename angeben</label>
+        <input class="form-control" name="attributeName"/>
     </div>
-</div>
+
+    <button type="submit" class="btn btn-primary">Attribut hinzufügen</button>
+</form>
