@@ -41,7 +41,7 @@ namespace Neusta.CompanyService.Database.Repositories
         public List<CompanyAttribute> GetAllAttributes()
         {
             return _dbContext.CompanyAttribute
-                .Include(company => company.CompanyAttributeValues)
+                .Include(attribute => attribute.CompanyAttributeValues)
                 .ToList();
         }
 
@@ -53,8 +53,17 @@ namespace Neusta.CompanyService.Database.Repositories
 
         public void Update(Company company)
         {
-            _dbContext.Update(company);
-            _dbContext.SaveChanges();
+            foreach (CompanyAttributeValue value in company.CompanyAttributeValues)
+            {
+                if (GetAttributeValueByIds(value.CompanyId, value.CompanyAttributeId) != null)
+                {
+                    UpdateAttributeValue(value);
+                }
+                else
+                {
+                    SaveAttributeValue(value);
+                }
+            }
         }
 
         public void Delete(long id)
@@ -97,7 +106,8 @@ namespace Neusta.CompanyService.Database.Repositories
 
         public void UpdateAttributeValue(CompanyAttributeValue value)
         {
-            _dbContext.CompanyAttributeValue.Update(value);
+            CompanyAttributeValue updateValue = GetAttributeValueByIds(value.CompanyId, value.CompanyAttributeId);
+            updateValue.Value = value.Value;
             _dbContext.SaveChanges();
         }
 
@@ -105,6 +115,12 @@ namespace Neusta.CompanyService.Database.Repositories
         {
             _dbContext.CompanyAttributeValue.Add(value);
             _dbContext.SaveChanges();
+        }
+        public CompanyAttributeValue GetAttributeValueByIds(long companyId, long attributeId)
+        {
+            CompanyAttributeValue value = _dbContext.CompanyAttributeValue
+                .FirstOrDefault(v => v.CompanyId== companyId && v.CompanyAttributeId == attributeId);
+            return value; 
         }
     }
 }

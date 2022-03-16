@@ -3,15 +3,25 @@
 
 // Write your JavaScript code.
 
-function submitForm() {
-    $('#attributeForm').submit().done(function(result) {
-        CallSuccessAlert();
-        $('#grid').html(result);
-    });
-}
-
+function SubmitForm(formName) {
+    var form = $("#" + formName);
+    $.ajax({
+        type: form.attr("method"),
+        url: form.attr("action"),
+        data:  form.serialize(),
+        dataType: "html"
+        })
+        .done(function(result) {
+            CallSuccessAlert();
+            $('#grid').html(result);
+        })
+        .fail(function() {
+            alert("Aktualisieren ist fehlgeschlagen");
+        });
+};
 
 function PostData(url, dataString) {
+    
     $.ajax({
             type: "post",
             dataType: "html",
@@ -27,7 +37,17 @@ function PostData(url, dataString) {
         });
 };
 
+function MergeDatas(dataString) {
+    var token = GetRequestVerificationTokenArray();
+    var mergedData = token;
+    if (dataString != null) {
+        mergedData = Object.assign(dataString, token);
+    }
+    return mergedData;
+};
+
 function PopUpModal(url, title) {
+
     $.ajax({
             type: "get",
             url: url
@@ -40,15 +60,6 @@ function PopUpModal(url, title) {
         .fail(function() {
             alert("Modal konnte nicht geladen werden");
         });
-};
-
-function MergeDatas(dataString) {
-    var token = GetRequestVerificationTokenArray();
-    var mergedData = token;
-    if (dataString != null) {
-        mergedData = Object.assign(dataString, token);
-    }
-    return mergedData;
 };
 
 function GetRequestVerificationTokenArray() {

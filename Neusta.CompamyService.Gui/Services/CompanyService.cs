@@ -25,6 +25,11 @@ namespace Neusta.CompamyService.Gui.Services
             return await _companyApi.ApiCompanyGetAsync();
         }
 
+        public async Task<CompanyDto> GetById(long id)
+        {
+            return await _companyApi.ApiCompanyCompanyidGetAsync(id);
+        }
+
         public async Task<IList<CompanyAttributeDto>> GetAttributes()
         {
             return await _companyApi.AttributesGetAsync();
@@ -68,7 +73,7 @@ namespace Neusta.CompamyService.Gui.Services
 
         public async Task DeleteAttribute(long id)
         {
-            //TODO companyApi hat nicht die delete attribute
+            await _companyApi.AttributesDeleteAsync(id);
         }
     }
 }

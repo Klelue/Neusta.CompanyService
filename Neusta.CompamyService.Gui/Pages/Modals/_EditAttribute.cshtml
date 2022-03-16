@@ -2,14 +2,14 @@
 @model Neusta.CompamyService.Gui.CompanyServiceApi.CompanyAttributeDto
 
 
-<h2 class="text-center">Attribute bearbeiten</h2>
-<form id="attributeForm" asp-page-handler="UpdateAttribute" method="post">
-    <input type="hidden" asp-for="Id"/>
-    <input type="hidden" asp-for="CompanyAttributeValues"/>
-    <input type="hidden" asp-for="OrderNumber"/>
+<form id="editAttributeForm" method="post" action="@Url.Page("Index", "UpdateAttribute")">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="CompanyAttributeValues" />
+    <input type="hidden" asp-for="OrderNumber" />
     <div class="form-group" align="center">
         <label asp-for="Name">Bezeichnung des Attributes</label>
-        <input type="text" asp-for="Name"/>
+        <input type="text" asp-for="Name" />
     </div>
     <div class="form-group" align="center">
         <label asp-for="Visible">Sichtbar <span class="bi-eye" aria-hidden="true"></span></label>
@@ -18,15 +18,15 @@
 </form>
 
 <div class="row">
-   <div class="col">
-       <button type="button" class="btn btn-primary" data-dismiss="modal"
-               onclick="submitForm()">
-           Update
-       </button>
+    <div class="col">
+        <button type="button" class="btn btn-primary"  data-dismiss="modal" 
+                onclick="SubmitForm('editAttributeForm')">
+            Update
+        </button>
     </div>
     <div class="col">
         <button type="button" class="btn btn-primary" data-dismiss="modal"
-                onclick="PostData('@Url.Page("Index", "DeleteAttribute", Model.Id)')">
+                onclick="PostData('@Url.Page("Index", "DeleteAttribute")', { attributeId: @(Model.Id) })">
             Löschen
         </button>
     </div>

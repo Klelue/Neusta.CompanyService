@@ -8,6 +8,7 @@ namespace Neusta.CompamyService.Gui.Services
     {
         Task Save(CompanyDto company);
         Task<IList<CompanyDto>> Get();
+        Task<CompanyDto> GetById(long id);
         Task<IList<CompanyAttributeDto>> GetAttributes();
         Task SaveAttribute(CompanyAttributeDto attribute);
         Task Update(CompanyDto company);

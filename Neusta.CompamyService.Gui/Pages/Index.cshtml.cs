@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Neusta.CompamyService.Gui.CompanyServiceApi;
@@ -38,7 +39,7 @@ namespace Neusta.CompamyService.Gui.Pages
             var editCompanyModel = new EditCompanyModel
             {
                 Attributes = await _companyService.GetAttributes(),
-                Company = company
+                Company = await _companyService.GetById(company.Id)
             };
             return Partial("Modals/_EditCompany", editCompanyModel);
         }
@@ -74,8 +75,30 @@ namespace Neusta.CompamyService.Gui.Pages
 
         public async Task<IActionResult> OnPostUpdateAsync(CompanyDto company)
         {
-            await _companyService.Update(company);
+            await _companyService.Update(DeleteEmptyValues(company));
             return await OnGetTablePartial();
+        }
+
+        private CompanyDto DeleteEmptyValues(CompanyDto company)
+        {
+            CompanyDto result = new CompanyDto
+            {
+                Id = company.Id,
+                CompanyAttributeValues = new List<CompanyAttributeValueDto>()
+            };
+
+            if (company.CompanyAttributeValues != null)
+            {
+                foreach (CompanyAttributeValueDto value in company.CompanyAttributeValues)
+                {
+                    if (value.Value != null)
+                    {
+                        result.CompanyAttributeValues.Add(value);
+                    }
+                }
+            }
+            
+            return result;
         }
 
         public async Task<IActionResult> OnPostDeleteAttributeAsync(long attributeId)

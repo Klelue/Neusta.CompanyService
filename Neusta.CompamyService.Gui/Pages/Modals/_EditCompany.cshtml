@@ -1,23 +1,36 @@
-﻿@using Neusta.CompamyService.Gui.CompanyServiceApi
+﻿@using System.Linq
+@using Neusta.CompamyService.Gui.CompanyServiceApi
 @model Neusta.CompamyService.Gui.Models.EditCompanyModel
 
 
-<h2 class="text-center">Company bearbeiten</h2>
-<form id="companyForm" asp-page-handler="Update" method="post">
-    <input type="hidden" asp-for="Company.Id"/>
+@{
+    string actionString = @Url.Page("Index", "Update");
+    string buttonName = "Update";
+}
+@if (Model.Company.Id == null)
+{
+    actionString = @Url.Page("Index");
+    buttonName = "Hinzufügen";
+}
 
-    @for (var index = 0; index < Model.Attributes.Count; index++)
+<form id="companyForm" action="@actionString" method="post">
+    <input type="hidden" asp-for="Company.Id"/>
+    @Html.AntiForgeryToken()
+    @foreach (var attribute in Model.Attributes)
     {
-        var attribute = Model.Attributes[index];
-        var valueNameString = "";
-        if (Model.Company.CompanyAttributeValues != null)
+        var index = 0;
+        
+        var value = Model.Company.CompanyAttributeValues.FirstOrDefault(v => v.CompanyAttributeId == attribute.Id);
+        if (value != null)
         {
-            var value = Model.Company.CompanyAttributeValues.FirstOrDefault(v => v.CompanyAttributeId == attribute.Id);
-            if (value != null)
-            {
-                valueNameString = value.Value;
-            }
+            index = Model.Company.CompanyAttributeValues.IndexOf(value);
         }
+        else
+        {
+            index = Model.Company.CompanyAttributeValues.Count;
+            Model.Company.CompanyAttributeValues.Add(new CompanyAttributeValueDto());
+        }
+
 
         <div class="form-group">
             <div class="row">
@@ -25,9 +38,12 @@
                     <label for="valueName">@(attribute.Name)</label>
                 </div>
                 <div class="col">
-                    <input type="text" asp-for="Company.CompanyAttributeValues[index].Value"/>
-                    <input type="hidden" asp-for="Company.CompanyAttributeValues[index].CompanyAttributeId" value="@(attribute.Id)"/>
-                    <input type="hidden" asp-for="Company.CompanyAttributeValues[index].CompanyId" value="@(Model.Company.Id)"/>
+                    <div class="form-group">
+                        <input type="text" asp-for="@Model.Company.CompanyAttributeValues[index].Value"/>
+                        <input type="hidden" asp-for="@Model.Company.CompanyAttributeValues[index].CompanyAttributeId" value="@(attribute.Id)"/>
+                        <input type="hidden" asp-for="@Model.Company.CompanyAttributeValues[index].CompanyId" value="@(Model.Company.Id)"/>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -42,11 +58,14 @@
 <div class="row">
     <div class="col">
         <button type="button" class="btn btn-primary" data-dismiss="modal"
-                onclick="PostData('@Url.Page("Index", "Delete")', { id: @(Model.Company.Id) })">
-            Löschen
+                onclick="SubmitForm('companyForm')">
+            @buttonName
         </button>
     </div>
     <div class="col">
-        <input type="submit" class="btn btn-primary" form="companyForm" value="Update"/>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                onclick="PostData('@Url.Page("Index", "Delete")', { id: @(Model.Company.Id) })">
+            Löschen
+        </button>
     </div>
 </div>
