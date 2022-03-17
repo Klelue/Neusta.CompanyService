@@ -29,7 +29,7 @@
                             </span>
 
                             <button type="button" class="btn btn-primary" style="font-size: xx-small"
-                                   onclick="PopUpModal('@Url.Page("Index", "EditAttributeModalPartial", attribute)', 'Attribute bearbeiten')">
+                                    onclick="PopUpModal('@Url.Page("Index", "EditAttributeModalPartial", attribute)', 'Attribute bearbeiten')">
                                 <span class="bi-pen" aria-hidden="true"></span>
                             </button>
                         </div>
@@ -49,8 +49,6 @@
                                 onclick="PopUpModal('@Url.Page("Index", "EditCompanyModalPartial", company)', 'Company bearbeiten')">
                             <span class="bi-pen" aria-hidden="true"></span>
                         </button>
-
-
                     </td>
 
                     @foreach (var attribute in Model.Attributes)
@@ -77,4 +75,5 @@
             onclick="PostData('@Url.Page("Index")')">
         Company hinzufügen
     </button>
+
 </div>

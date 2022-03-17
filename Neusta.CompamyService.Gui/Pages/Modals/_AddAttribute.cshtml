@@ -1,13 +1,14 @@
 ﻿<h2 class="text-center">Attribut hinzufügen</h2>
 
-<form asp-page-handler="Attribute" id="attributeName" method="post">
+<form action="@Url.Page("Index", "Attribute")" id="addAttributeForm" method="post">
+    @Html.AntiForgeryToken()
     <div class="form-group">
-        <div>
-
-        </div>
         <label>Attributename angeben</label>
-        <input class="form-control" name="attributeName"/>
+        <input class="text" name="attributeName"/>
     </div>
 
-    <button type="submit" class="btn btn-primary">Attribut hinzufügen</button>
+    <button type="button" class="btn btn-primary" data-dismiss="modal"
+            onclick="SubmitForm('addAttributeForm')">
+        Hinzufügen
+    </button>
 </form>

@@ -3,23 +3,13 @@
 @model Neusta.CompamyService.Gui.Models.EditCompanyModel
 
 
-@{
-    string actionString = @Url.Page("Index", "Update");
-    string buttonName = "Update";
-}
-@if (Model.Company.Id == null)
-{
-    actionString = @Url.Page("Index");
-    buttonName = "Hinzufügen";
-}
-
-<form id="companyForm" action="@actionString" method="post">
+<form id="companyForm" action="@Url.Page("Index", "Update")" method="post">
     <input type="hidden" asp-for="Company.Id"/>
     @Html.AntiForgeryToken()
     @foreach (var attribute in Model.Attributes)
     {
         var index = 0;
-        
+                
         var value = Model.Company.CompanyAttributeValues.FirstOrDefault(v => v.CompanyAttributeId == attribute.Id);
         if (value != null)
         {
@@ -58,14 +48,14 @@
 <div class="row">
     <div class="col">
         <button type="button" class="btn btn-primary" data-dismiss="modal"
-                onclick="SubmitForm('companyForm')">
-            @buttonName
+                onclick="PostData('@Url.Page("Index", "Delete")', { id: @(Model.Company.Id) })">
+            Löschen
         </button>
     </div>
     <div class="col">
         <button type="button" class="btn btn-primary" data-dismiss="modal"
-                onclick="PostData('@Url.Page("Index", "Delete")', { id: @(Model.Company.Id) })">
-            Löschen
+                onclick="SubmitForm('companyForm')">
+            Update
         </button>
     </div>
 </div>

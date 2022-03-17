@@ -75,6 +75,7 @@ namespace Neusta.CompamyService.Gui.Pages
 
         public async Task<IActionResult> OnPostUpdateAsync(CompanyDto company)
         {
+            CompanyDto companyWithoutNullValues = DeleteEmptyValues(company);
             await _companyService.Update(DeleteEmptyValues(company));
             return await OnGetTablePartial();
         }
